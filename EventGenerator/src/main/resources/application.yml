@@ -1,0 +1,43 @@
+spring:
+  cloud:
+    stream:
+      bindings:
+        input:
+          destination: queue.log.messages
+          binder: local_rabbit
+        output:
+          destination: queue.pretty.log.messages
+          binder: local_rabbit
+      binders:
+        local_rabbit:
+          type: rabbit
+          environment:
+            spring:
+              rabbitmq:
+                host: localhost
+                port: 5672
+                username: guest
+                password: guest
+                virtual-host: /
+  kafka:    bootstrap-servers: localhost:9092
+  data:
+    mongodb:
+      host: localhost
+      port: 27017
+      database: ternium
+app:
+  topic:
+    planeacion: mx.com.ternium.planeacion    
+    programacion: mx.com.ternium.programacion
+    logistica: mx.com.ternium.logistica
+management:
+  health:
+    binders:
+      enabled: true
+server:
+  port: 8081
+kieserver:
+  url: http://localhost:8080/kie-server/services/rest/server
+  user: wbadmin
+  password: wbadmin
+  container: com.myspace:Ternium:1.0.0-SNAPSHOT
