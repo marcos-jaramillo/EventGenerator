@@ -5,8 +5,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.ternium.core.eventgenerator.messenger.Messenger;
+import com.ternium.core.eventgenerator.messenger.IMessenger;
 import com.ternium.core.eventgenerator.messenger.vo.MessageVO;
+import com.ternium.core.eventgenerator.util.KieServerProperties;
 import com.ternium.core.eventgenerator.visitor.Visitor;
 import com.ternium.core.eventgenerator.visitor.element.EventElement;
 
@@ -15,7 +16,10 @@ public class DataTransformVisitor implements Visitor{
     private static Logger logger = LoggerFactory.getLogger(DataTransformVisitor.class);
 
     @Autowired
-	Messenger rulesMessenger;
+	IMessenger rulesMessenger;
+    
+    @Autowired
+	KieServerProperties kieServerProperties;
     
 	@Override
 	public void visit(EventElement element) throws Exception {
@@ -23,8 +27,14 @@ public class DataTransformVisitor implements Visitor{
     	
 		MessageVO messageVO = new MessageVO();
 		
+		messageVO.setGroupName(element.getGroupName());
+		messageVO.setContainer(kieServerProperties.getContainer());
 		messageVO.setMessage(element.getMessage());
-    	rulesMessenger.sendMessage(messageVO);
+		messageVO.setJsonObj(element.getJsonObj());
+				
+		rulesMessenger.sendMessage(messageVO);
+		
+		logger.info(messageVO.getOutMessage());
 	}
 
 }

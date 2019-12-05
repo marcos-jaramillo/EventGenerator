@@ -7,6 +7,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import com.ternium.core.eventgenerator.kafka.service.KafkaService;
+import com.ternium.core.eventgenerator.messenger.IMessenger;
+import com.ternium.core.eventgenerator.messenger.vo.MessageVO;
+import com.ternium.core.eventgenerator.util.KieServerProperties;
 import com.ternium.core.eventgenerator.visitor.Visitor;
 import com.ternium.core.eventgenerator.visitor.element.EventElement;
 
@@ -17,20 +20,33 @@ public class MessageBuilderVisitor implements Visitor{
     @Autowired
     KafkaService kafkaService;
     
-    @Value("${app.topic.planeacion}")
-    private String topicPlaneacion;
+    @Autowired
+	IMessenger rulesMessenger;
     
-    @Value("${app.topic.programacion}")
-    private String topicProgramacion;
+    @Value("${kieserver.maintopicname}")
+	private String maintopicname;
     
-    @Value("${app.topic.logistica}")
-    private String topicLogistica;
+    @Autowired
+	KieServerProperties kieServerProperties;
     
 	@Override
 	public void visit(EventElement element) throws Exception {
 		logger.info("Message received " + element.getMessage());
     	
-    	kafkaService.send(topicLogistica,element.getMessage());
+		MessageVO messageVO = new MessageVO();
+		
+		messageVO.setGroupName(null);
+		messageVO.setContainer(kieServerProperties.getContainerTopic());
+		messageVO.setMessage(element.getMessage());
+		messageVO.setJsonObj(element.getJsonObj());
+				
+		rulesMessenger.sendMessage(messageVO);
+		
+		if(messageVO.getTopic().isEmpty()) {
+			throw new Exception("No se retorno regla");
+		}
+		
+    	kafkaService.send(messageVO.getTopic(),element.getMessage());
 	}
 
 }

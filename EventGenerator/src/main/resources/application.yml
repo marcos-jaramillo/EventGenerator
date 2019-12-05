@@ -41,3 +41,6 @@ kieserver:
   user: wbadmin
   password: wbadmin
   container: com.myspace:Ternium:1.0.0-SNAPSHOT
+  mainrulename: EstadoViaje
+  containertopic: com.ternium:Ternium:1.0.0-SNAPSHOT
+  maintopicname: TopicDecisionTree
