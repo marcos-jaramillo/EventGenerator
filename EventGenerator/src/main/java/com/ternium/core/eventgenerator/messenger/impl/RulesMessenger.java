@@ -1,8 +1,16 @@
 package com.ternium.core.eventgenerator.messenger.impl;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Calendar;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
+import org.apache.commons.collections.map.HashedMap;
+import org.drools.core.command.runtime.rule.GetObjectsCommand;
+import org.json.JSONObject;
 import org.kie.api.KieServices;
 import org.kie.api.command.BatchExecutionCommand;
 import org.kie.api.command.Command;
@@ -15,12 +23,17 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.ternium.core.eventgenerator.messenger.Messenger;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.ternium.core.eventgenerator.enums.JsonFieldEnum;
+import com.ternium.core.eventgenerator.messenger.IMessenger;
+import com.ternium.core.eventgenerator.messenger.vo.Message;
 import com.ternium.core.eventgenerator.messenger.vo.MessageVO;
 import com.ternium.core.eventgenerator.util.KieServerProperties;
+import org.kie.server.api.model.KieServiceResponse;
+
 
 @Component
-public class RulesMessenger implements Messenger{
+public class RulesMessenger implements IMessenger{
 	private static Logger logger = LoggerFactory.getLogger(RulesMessenger.class);
 	
 	@Autowired
@@ -33,7 +46,79 @@ public class RulesMessenger implements Messenger{
 	KieServices kieServices;
 	
 	public void sendMessage(MessageVO message) throws Exception {
-		logger.info("Going to send the message " + message);
+		ObjectMapper objectMapper = new ObjectMapper();
+		Message ruleMessage = new Message();
+        try {
+        	/*jsonObject = message.getJsonObj();
+        	
+        	ruleMessage.setDomain(jsonObject.getString(JsonFieldEnum.DOMAIN.getValue()));
+        	ruleMessage.setEvent(jsonObject.getString(JsonFieldEnum.EVENT.getValue()));
+        	ruleMessage.setTimestamp(jsonObject.getString(JsonFieldEnum.TIMESTAMP.getValue()));
+        	
+        	JSONObject jsonObj = new JSONObject(jsonObject.getString(JsonFieldEnum.DATA.getValue()));
+        	Map<String,String> mapData = new HashMap<String,String>();
+        	
+        	Iterator<String> itData = jsonObj.keys();
+        	String key = null;
+        	while(itData.hasNext()) {
+        		key = itData.next();
+        		mapData.put(key, jsonObj.getString(key));
+        	}
+        	ruleMessage.setData(mapData);
+        	
+        	*/
+        	
+        	ruleMessage = objectMapper.readValue(message.getMessage(), Message.class);
+
+        	KieCommands commandFactory = kieServices.getCommands();
+        	
+        	GetObjectsCommand getObjectsCommand = new GetObjectsCommand();
+            getObjectsCommand.setOutIdentifier("message");
+            
+            String objectId = Calendar.getInstance().getTimeInMillis() + ruleMessage.getDomain() + ruleMessage.getEvent() + ruleMessage.getTimestamp();
+            
+            Command<?> insert = commandFactory.newInsert(ruleMessage, objectId);
+            logger.info("Going to call the group " + message.getGroupName());
+            Command<?> agendaGroup = commandFactory.newAgendaGroupSetFocus(message.getGroupName());
+            Command<?> fireAllRules = commandFactory.newFireAllRules();
+            Command<?> getObjects = commandFactory.newGetObjects("message");
+            
+            Command<?> batchCommand = commandFactory.newBatchExecution(Arrays.asList(insert,agendaGroup, getObjects, fireAllRules));
+
+            ServiceResponse<ExecutionResults> executeResponse = rulesClient.executeCommandsWithResults(message.getContainer(), batchCommand);
+        	
+            if (executeResponse.getType() == KieServiceResponse.ResponseType.SUCCESS) {
+                System.out.println("Commands executed with success! Response: ");
+                Message responseMessage = (Message) executeResponse.getResult().getValue(objectId);
+
+                logger.info(("respuesta de objeto:" + responseMessage.toString()));
+                
+                if (responseMessage.getRuleName() != null && !responseMessage.getRuleName().isEmpty()){
+                    //Aqui recibira el nombre de la regla que quiere ejecutar
+                    message.setGroupName(responseMessage.getRuleName());
+                }
+                
+                if (responseMessage.getTopic() != null && !responseMessage.getTopic().isEmpty()){
+                    //Aqui recibira el nombre de la regla que quiere ejecutar
+                    message.setTopic(responseMessage.getTopic());
+                }
+                if (responseMessage.getData() != null && responseMessage.getData().containsKey("EstatusViaje")){
+	                // Message messageResponse = (Message)executeResponse.getResult().getValue("message");
+	                message.setEstatusViaje(Integer.parseInt(responseMessage.getData().get("EstatusViaje").toString()));
+                }
+            } else {
+            	logger.error("Error executing rules. Message: ");
+            	logger.error(executeResponse.getMsg());
+                message.setEstatusViaje(0);
+            }
+        } catch (Exception e) {
+        	logger.error("Error executing rules. Message: " + e.getMessage());
+            message.setEstatusViaje(0);
+        }
+	}
+	
+	/*
+	 	logger.info("Going to send the message " + message);
 		List<Command<?>> commands = new ArrayList<>();
 		logger.info("Going to send message to " + kieServerProperties.getServerUrl() + "::" + kieServerProperties.getUser() + "::" + kieServerProperties.getUserCredential() + "::" + kieServerProperties.getContainer());
 		
@@ -52,9 +137,8 @@ public class RulesMessenger implements Messenger{
 		logger.info("Going to results  DONE!!" + results.getIdentifiers());
 		
         logger.info("Message sent with response " );
-	}
-	
-	
+ 
+	 */
 	
 
 }
