@@ -35,7 +35,8 @@ public class MessageBuilderVisitor implements Visitor{
     	
 		MessageVO messageVO = new MessageVO();
 		
-		messageVO.setGroupName(null);
+		messageVO.setGroupName("TopicAssignment");
+		messageVO.setContainer("Ternium_1.0.0-SNAPSHOT");
 		messageVO.setContainer(kieServerProperties.getContainerTopic());
 		messageVO.setMessage(element.getMessage());
 		messageVO.setJsonObj(element.getJsonObj());

@@ -40,7 +40,7 @@ kieserver:
   url: http://localhost:8080/kie-server/services/rest/server
   user: wbadmin
   password: wbadmin
-  container: com.myspace:Ternium:1.0.0-SNAPSHOT
-  mainrulename: EstadoViaje
-  containertopic: com.ternium:Ternium:1.0.0-SNAPSHOT
-  maintopicname: TopicDecisionTree
+  container: Ternium_1.0.0-SNAPSHOT
+  mainrulename: MainRuleAgents
+  containertopic: Ternium-1_1.0.0-SNAPSHOT-2
+  maintopicname:
