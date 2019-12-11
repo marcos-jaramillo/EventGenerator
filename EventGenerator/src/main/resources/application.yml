@@ -41,6 +41,4 @@ kieserver:
   user: wbadmin
   password: wbadmin
   container: Ternium_1.0.0-SNAPSHOT
-  mainrulename: MainRuleAgents
-  containertopic: Ternium-1_1.0.0-SNAPSHOT-2
-  maintopicname:
+  mainrulename: FilterRules

@@ -1,13 +1,20 @@
 package com.ternium.core.eventgenerator.visitor.impl;
 
+import java.util.Calendar;
+
+import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ternium.core.eventgenerator.kafka.service.KafkaService;
 import com.ternium.core.eventgenerator.messenger.IMessenger;
+import com.ternium.core.eventgenerator.messenger.vo.KafkaMessage;
+import com.ternium.core.eventgenerator.messenger.vo.Message;
 import com.ternium.core.eventgenerator.messenger.vo.MessageVO;
 import com.ternium.core.eventgenerator.util.KieServerProperties;
 import com.ternium.core.eventgenerator.visitor.Visitor;
@@ -22,10 +29,7 @@ public class MessageBuilderVisitor implements Visitor{
     
     @Autowired
 	IMessenger rulesMessenger;
-    
-    @Value("${kieserver.maintopicname}")
-	private String maintopicname;
-    
+        
     @Autowired
 	KieServerProperties kieServerProperties;
     
@@ -33,13 +37,16 @@ public class MessageBuilderVisitor implements Visitor{
 	public void visit(EventElement element) throws Exception {
 		logger.info("Message received " + element.getMessage());
     	
+		element.getMessageObj().setEvent(element.getEvent());
+		
+		Message message = element.getMessageObj();
 		MessageVO messageVO = new MessageVO();
 		
-		messageVO.setGroupName("TopicAssignment");
-		messageVO.setContainer("Ternium_1.0.0-SNAPSHOT");
-		messageVO.setContainer(kieServerProperties.getContainerTopic());
+		messageVO.setGroupName(element.getGroupName());
+		messageVO.setContainer(kieServerProperties.getContainer());
 		messageVO.setMessage(element.getMessage());
-		messageVO.setJsonObj(element.getJsonObj());
+		messageVO.setMessageObj(element.getMessageObj());
+		messageVO.setEvent(element.getEvent());
 				
 		rulesMessenger.sendMessage(messageVO);
 		
@@ -47,7 +54,11 @@ public class MessageBuilderVisitor implements Visitor{
 			throw new Exception("No se retorno regla");
 		}
 		
-    	kafkaService.send(messageVO.getTopic(),element.getMessage());
+		KafkaMessage kafkaMessage = new KafkaMessage(message.getDomain(), message.getEvent(), String.valueOf(Calendar.getInstance().getTimeInMillis()), message.getData());
+		
+		ObjectMapper objectMapper = new ObjectMapper();
+		
+    	kafkaService.send(messageVO.getTopic(),objectMapper.writeValueAsString(kafkaMessage));
 	}
 
 }

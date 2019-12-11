@@ -19,11 +19,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.ternium.core.eventgenerator.domain.Transaction;
 import com.ternium.core.eventgenerator.domain.Transfer;
 import com.ternium.core.eventgenerator.enums.JsonFieldEnum;
 import com.ternium.core.eventgenerator.exception.DataAlreadyExistException;
 import com.ternium.core.eventgenerator.messenger.IMessenger;
+import com.ternium.core.eventgenerator.messenger.vo.Message;
 import com.ternium.core.eventgenerator.messenger.vo.MessageVO;
+import com.ternium.core.eventgenerator.repository.TransactionRepository;
 import com.ternium.core.eventgenerator.repository.TransferRepository;
 import com.ternium.core.eventgenerator.util.KieServerProperties;
 import com.ternium.core.eventgenerator.visitor.Visitor;
@@ -43,7 +47,7 @@ public class FilterVisitor implements Visitor{
 	JavaSparkContext javaSparkContext;
 	
 	@Autowired
-	TransferRepository transferRepository;
+	TransactionRepository transactionRepository;
 	
 	@Value("${kieserver.mainrulename}")
 	private String mainrulename;
@@ -55,6 +59,7 @@ public class FilterVisitor implements Visitor{
 	public void visit(EventElement element) throws Exception {
 		//Transform Strign message to DataSet
 		logger.info("Recieve message " + element.getMessage());
+		Message message = element.getMessageObj();
 		
 		SQLContext sqlContext = new SQLContext(javaSparkContext);
 		logger.info("SPARK Context Builded");	
@@ -63,18 +68,15 @@ public class FilterVisitor implements Visitor{
 		logger.info("jsonData:=" + jsonData);	
 		Dataset<Row> data  = sparkSession.createDataset(jsonData, Encoders.STRING()).toDF();
 		data.show();
-		logger.info("data:=" + data);	
-        
-		JSONObject jsonObj = new JSONObject(element.getMessage());
-		element.setJsonObj(jsonObj);
+		logger.info("data:=" + data);
 		
-		Transfer transfer = new Transfer(jsonObj.getString(JsonFieldEnum.DOMAIN.getValue()), jsonObj.getString(JsonFieldEnum.TIMESTAMP.getValue()), jsonObj.getString(JsonFieldEnum.EVENT.getValue()), jsonObj.getJSONObject(JsonFieldEnum.DATA.getValue()).toString());
+		Transaction transaction = new Transaction(message.getDomain(), message.getTrx(), message.getTimestamp(), message.getData());
 		
-		if(!transferRepository.findById(transfer.getId()).isPresent()) {
-			transferRepository.save(transfer);
+		if(!transactionRepository.findById(transaction.getId()).isPresent()) {
+			transactionRepository.save(transaction);
 		}else {
 			logger.info("Data Already Exist");
-			throw new DataAlreadyExistException("Data Already Exist for " + jsonObj.toString());
+			throw new DataAlreadyExistException("Data Already Exist for " + transaction.toString());
 		}
 		
 		MessageVO messageVO = new MessageVO();
@@ -82,7 +84,7 @@ public class FilterVisitor implements Visitor{
 		messageVO.setGroupName(mainrulename);
 		messageVO.setContainer(kieServerProperties.getContainer());
 		messageVO.setMessage(element.getMessage());
-		messageVO.setJsonObj(element.getJsonObj());
+		messageVO.setMessageObj(message);
 				
 		rulesMessenger.sendMessage(messageVO);
 		

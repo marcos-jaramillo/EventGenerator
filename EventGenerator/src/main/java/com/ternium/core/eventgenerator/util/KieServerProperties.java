@@ -37,8 +37,6 @@ public class KieServerProperties {
 	@Value("${kieserver.mainrulename}")
 	private String mainrule;
 	
-	@Value("${kieserver.containertopic}")
-	private String containerTopic;
 
 	public String getServerUrl() {
 		return serverUrl;
@@ -80,14 +78,6 @@ public class KieServerProperties {
 	public void setMainrule(String mainrule) {
 		this.mainrule = mainrule;
 	}	
-	
-	public String getContainerTopic() {
-		return containerTopic;
-	}
-
-	public void setContainerTopic(String containerTopic) {
-		this.containerTopic = containerTopic;
-	}
 	
 	@Bean
 	public KieServices kieServices() {

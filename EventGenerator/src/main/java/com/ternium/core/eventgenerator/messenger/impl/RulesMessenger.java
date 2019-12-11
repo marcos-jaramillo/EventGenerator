@@ -49,27 +49,8 @@ public class RulesMessenger implements IMessenger{
 		ObjectMapper objectMapper = new ObjectMapper();
 		Message ruleMessage = new Message();
         try {
-        	/*jsonObject = message.getJsonObj();
+        	ruleMessage = message.getMessageObj();
         	
-        	ruleMessage.setDomain(jsonObject.getString(JsonFieldEnum.DOMAIN.getValue()));
-        	ruleMessage.setEvent(jsonObject.getString(JsonFieldEnum.EVENT.getValue()));
-        	ruleMessage.setTimestamp(jsonObject.getString(JsonFieldEnum.TIMESTAMP.getValue()));
-        	
-        	JSONObject jsonObj = new JSONObject(jsonObject.getString(JsonFieldEnum.DATA.getValue()));
-        	Map<String,String> mapData = new HashMap<String,String>();
-        	
-        	Iterator<String> itData = jsonObj.keys();
-        	String key = null;
-        	while(itData.hasNext()) {
-        		key = itData.next();
-        		mapData.put(key, jsonObj.getString(key));
-        	}
-        	ruleMessage.setData(mapData);
-        	
-        	*/
-        	
-        	ruleMessage = objectMapper.readValue(message.getMessage(), Message.class);
-
         	KieCommands commandFactory = kieServices.getCommands();
         	
         	GetObjectsCommand getObjectsCommand = new GetObjectsCommand();
@@ -102,9 +83,20 @@ public class RulesMessenger implements IMessenger{
                     //Aqui recibira el nombre de la regla que quiere ejecutar
                     message.setTopic(responseMessage.getTopic());
                 }
+                
+                if (responseMessage.getEvent() != null && !responseMessage.getEvent().isEmpty()){
+                    //Aqui recibira el nombre de la regla que quiere ejecutar
+                    message.setEvent((responseMessage.getEvent()));
+                }
+                
                 if (responseMessage.getData() != null && responseMessage.getData().containsKey("EstatusViaje")){
 	                // Message messageResponse = (Message)executeResponse.getResult().getValue("message");
 	                message.setEstatusViaje(Integer.parseInt(responseMessage.getData().get("EstatusViaje").toString()));
+                }
+                
+                if (responseMessage.getJsonQuery() != null){
+                    //Aqui recibira el nombre de la regla que quiere ejecutar
+                    message.setJsonQuery(responseMessage.getJsonQuery());
                 }
             } else {
             	logger.error("Error executing rules. Message: ");

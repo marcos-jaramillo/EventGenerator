@@ -30,11 +30,12 @@ public class DataTransformVisitor implements Visitor{
 		messageVO.setGroupName(element.getGroupName());
 		messageVO.setContainer(kieServerProperties.getContainer());
 		messageVO.setMessage(element.getMessage());
-		messageVO.setJsonObj(element.getJsonObj());
+		messageVO.setMessageObj(element.getMessageObj());
 				
 		rulesMessenger.sendMessage(messageVO);
 		
-		logger.info(messageVO.getOutMessage());
+		element.setGroupName(messageVO.getGroupName());
+		element.setEvent(messageVO.getEvent());
 	}
 
 }

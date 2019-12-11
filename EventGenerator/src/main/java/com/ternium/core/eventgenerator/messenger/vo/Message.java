@@ -3,6 +3,14 @@ package com.ternium.core.eventgenerator.messenger.vo;
 import java.util.Map;
 
 public class Message implements java.io.Serializable {
+	public String getTrx() {
+		return trx;
+	}
+
+	public void setTrx(String trx) {
+		this.trx = trx;
+	}
+
 	/**
 	 * 
 	 */
@@ -13,11 +21,14 @@ public class Message implements java.io.Serializable {
 	private Map data;
 	private String topic;
 	private String ruleName;
+	private String trx;
+	private Map translatorMap;
+	private String jsonQuery;
 
 	@Override
 	public String toString() {
 		return "Message [domain=" + domain + ", event=" + event + ", timestamp=" + timestamp + ", data=" + data
-				+ ", topic=" + topic + ", ruleName=" + ruleName + "]";
+				+ ", topic=" + topic + ", ruleName=" + ruleName + ", trx=" + trx + ", translatorMap=" + translatorMap + ", jsonQuery=" + jsonQuery + "]";
 	}
 
 	public String getDomain() {
@@ -68,7 +79,23 @@ public class Message implements java.io.Serializable {
 		this.ruleName = ruleName;
 	}
 
-	public Message(String domain, String event, String timestamp, Map data, String topic, String ruleName) {
+	public Map getTranslatorMap() {
+		return translatorMap;
+	}
+
+	public void setTranslatorMap(Map translatorMap) {
+		this.translatorMap = translatorMap;
+	}
+
+	public String getJsonQuery() {
+		return jsonQuery;
+	}
+
+	public void setJsonQuery(String jsonQuery) {
+		this.jsonQuery = jsonQuery;
+	}
+
+	public Message(String domain, String event, String timestamp, Map data, String topic, String ruleName, String trx, Map translatorMap, String jsonQuery) {
 		super();
 		this.domain = domain;
 		this.event = event;
@@ -76,6 +103,9 @@ public class Message implements java.io.Serializable {
 		this.data = data;
 		this.topic = topic;
 		this.ruleName = ruleName;
+		this.trx = trx;
+		this.translatorMap = translatorMap;
+		this.jsonQuery = jsonQuery;
 	}
 
 	public Message() {
