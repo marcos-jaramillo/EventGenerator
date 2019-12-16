@@ -1,16 +1,10 @@
 package com.ternium.core.eventgenerator.messenger.vo;
 
+import java.util.HashMap;
 import java.util.Map;
 
 public class Message implements java.io.Serializable {
-	public String getTrx() {
-		return trx;
-	}
-
-	public void setTrx(String trx) {
-		this.trx = trx;
-	}
-
+	
 	/**
 	 * 
 	 */
@@ -22,13 +16,23 @@ public class Message implements java.io.Serializable {
 	private String topic;
 	private String ruleName;
 	private String trx;
-	private Map translatorMap;
+	private String translatorMap;
 	private String jsonQuery;
+	private Boolean cache;
+	private Integer expectedTrxs;
 
 	@Override
 	public String toString() {
 		return "Message [domain=" + domain + ", event=" + event + ", timestamp=" + timestamp + ", data=" + data
-				+ ", topic=" + topic + ", ruleName=" + ruleName + ", trx=" + trx + ", translatorMap=" + translatorMap + ", jsonQuery=" + jsonQuery + "]";
+				+ ", topic=" + topic + ", ruleName=" + ruleName + ", trx=" + trx + ", translatorMap=" + translatorMap + ", jsonQuery=" + jsonQuery 
+				+ ", cache=" + cache + ", expectedTrxs=" + expectedTrxs + "]";
+	}
+	public String getTrx() {
+		return trx;
+	}
+
+	public void setTrx(String trx) {
+		this.trx = trx;
 	}
 
 	public String getDomain() {
@@ -79,11 +83,11 @@ public class Message implements java.io.Serializable {
 		this.ruleName = ruleName;
 	}
 
-	public Map getTranslatorMap() {
+	public String getTranslatorMap() {
 		return translatorMap;
 	}
 
-	public void setTranslatorMap(Map translatorMap) {
+	public void setTranslatorMap(String translatorMap) {
 		this.translatorMap = translatorMap;
 	}
 
@@ -95,7 +99,21 @@ public class Message implements java.io.Serializable {
 		this.jsonQuery = jsonQuery;
 	}
 
-	public Message(String domain, String event, String timestamp, Map data, String topic, String ruleName, String trx, Map translatorMap, String jsonQuery) {
+	public Boolean getCache() {
+		return cache;
+	}
+	public void setCache(Boolean cache) {
+		this.cache = cache;
+	}
+	
+	public Integer getExpectedTrxs() {
+		return expectedTrxs;
+	}
+	public void setExpectedTrxs(Integer expectedTrxs) {
+		this.expectedTrxs = expectedTrxs;
+	}
+	
+	public Message(String domain, String event, String timestamp, Map data, String topic, String ruleName, String trx, String translatorMap, String jsonQuery, Boolean cache, Integer expectedTrxs) {
 		super();
 		this.domain = domain;
 		this.event = event;
@@ -106,14 +124,12 @@ public class Message implements java.io.Serializable {
 		this.trx = trx;
 		this.translatorMap = translatorMap;
 		this.jsonQuery = jsonQuery;
+		this.cache = cache;
+		this.expectedTrxs = expectedTrxs;
 	}
 
 	public Message() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
-
-
-
-
 }

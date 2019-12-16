@@ -42,3 +42,4 @@ kieserver:
   password: wbadmin
   container: Ternium_1.0.0-SNAPSHOT
   mainrulename: FilterRules
+  translatoragendarule: Translator

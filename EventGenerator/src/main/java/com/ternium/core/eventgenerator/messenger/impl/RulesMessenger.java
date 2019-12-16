@@ -98,6 +98,17 @@ public class RulesMessenger implements IMessenger{
                     //Aqui recibira el nombre de la regla que quiere ejecutar
                     message.setJsonQuery(responseMessage.getJsonQuery());
                 }
+                
+                if(responseMessage.getTranslatorMap() != null && !responseMessage.getTranslatorMap().isEmpty()) {
+                	message.setTranslatorMap(responseMessage.getTranslatorMap());
+                }
+                if(responseMessage.getCache() != null && responseMessage.getCache()) {
+                	message.setCache(responseMessage.getCache());
+                }
+                
+                if(responseMessage.getExpectedTrxs() != null){
+                	message.setExpectedTrxs(responseMessage.getExpectedTrxs());
+                }
             } else {
             	logger.error("Error executing rules. Message: ");
             	logger.error(executeResponse.getMsg());

@@ -12,6 +12,9 @@ public class MessageVO {
 	private String container;
 	private String event;
 	private String jsonQuery;
+	private String translatorMap;
+	private Boolean cache;
+	private Integer expectedTrxs;
 	
 	public String getMessage() {
 		return message;
@@ -68,14 +71,39 @@ public class MessageVO {
 	public void setJsonQuery(String jsonQuery) {
 		this.jsonQuery = jsonQuery;
 	}
+	
+	public String getTranslatorMap() {
+		return translatorMap;
+	}
+	public void setTranslatorMap(String translatorMap) {
+		this.translatorMap = translatorMap;
+	}
+	
+	public Boolean getCache() {
+		if(cache==null) {
+			cache = Boolean.FALSE;
+		}
+		return cache;
+	}
+	public void setCache(Boolean cache) {
+		this.cache = cache;
+	}
+	
+	
+	public Integer getExpectedTrxs() {
+		return expectedTrxs;
+	}
+	public void setExpectedTrxs(Integer expectedTrxs) {
+		this.expectedTrxs = expectedTrxs;
+	}
 	@Override
 	public String toString() {
 		return "MessageVO [message=" + message + ", outMessage=" + outMessage + ", groupName=" + groupName
 				+ ", messageObj=" + messageObj + ", estatusViaje=" + estatusViaje + ", topic=" + topic + ", container="
-				+ container + ", event=" + event + "]";
+				+ container + ", event=" + event + ", cache=" + cache + ", expectedTrxs=" + expectedTrxs + "]";
 	}
 	public MessageVO(String message, String outMessage, String groupName, Message messageObj, Integer estatusViaje,
-			String topic, String container, String event, String jsonQuery) {
+			String topic, String container, String event, String jsonQuery, String translatorMap, Boolean cache, Integer expectedTrxs) {
 		super();
 		this.message = message;
 		this.outMessage = outMessage;
@@ -86,6 +114,9 @@ public class MessageVO {
 		this.container = container;
 		this.event = event;
 		this.jsonQuery = jsonQuery;
+		this.translatorMap = translatorMap;
+		this.cache = cache;
+		this.expectedTrxs = expectedTrxs;
 	}
 	public MessageVO() {
 		super();

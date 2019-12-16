@@ -11,6 +11,7 @@ import org.springframework.stereotype.Component;
 
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.ternium.core.eventgenerator.exception.TopicNotMatchException;
 import com.ternium.core.eventgenerator.kafka.service.KafkaService;
 import com.ternium.core.eventgenerator.messenger.IMessenger;
 import com.ternium.core.eventgenerator.messenger.vo.KafkaMessage;
@@ -51,10 +52,10 @@ public class MessageBuilderVisitor implements Visitor{
 		rulesMessenger.sendMessage(messageVO);
 		
 		if(messageVO.getTopic().isEmpty()) {
-			throw new Exception("No se retorno regla");
+			throw new TopicNotMatchException("Error while getting Topic for " + element.getMessage() + " from Rule " + element.getGroupName());
 		}
 		
-		KafkaMessage kafkaMessage = new KafkaMessage(message.getDomain(), message.getEvent(), String.valueOf(Calendar.getInstance().getTimeInMillis()), message.getData());
+		KafkaMessage kafkaMessage = new KafkaMessage(message.getDomain(), message.getEvent(), String.valueOf(Calendar.getInstance().getTimeInMillis()), element.getEventDataMap());
 		
 		ObjectMapper objectMapper = new ObjectMapper();
 		

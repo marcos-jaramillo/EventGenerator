@@ -2,6 +2,7 @@ package com.ternium.core.eventgenerator.visitor.impl;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -24,12 +25,14 @@ import com.ternium.core.eventgenerator.domain.Transaction;
 import com.ternium.core.eventgenerator.domain.Transfer;
 import com.ternium.core.eventgenerator.enums.JsonFieldEnum;
 import com.ternium.core.eventgenerator.exception.DataAlreadyExistException;
+import com.ternium.core.eventgenerator.exception.MainRuleNotMatchException;
 import com.ternium.core.eventgenerator.messenger.IMessenger;
 import com.ternium.core.eventgenerator.messenger.vo.Message;
 import com.ternium.core.eventgenerator.messenger.vo.MessageVO;
 import com.ternium.core.eventgenerator.repository.TransactionRepository;
 import com.ternium.core.eventgenerator.repository.TransferRepository;
 import com.ternium.core.eventgenerator.util.KieServerProperties;
+import com.ternium.core.eventgenerator.util.TranslatorUtils;
 import com.ternium.core.eventgenerator.visitor.Visitor;
 import com.ternium.core.eventgenerator.visitor.element.EventElement;
 
@@ -51,6 +54,7 @@ public class FilterVisitor implements Visitor{
 	
 	@Value("${kieserver.mainrulename}")
 	private String mainrulename;
+		
 	
 	@Autowired
 	KieServerProperties kieServerProperties;
@@ -60,6 +64,7 @@ public class FilterVisitor implements Visitor{
 		//Transform Strign message to DataSet
 		logger.info("Recieve message " + element.getMessage());
 		Message message = element.getMessageObj();
+		MessageVO messageVO = new MessageVO();
 		
 		SQLContext sqlContext = new SQLContext(javaSparkContext);
 		logger.info("SPARK Context Builded");	
@@ -70,17 +75,6 @@ public class FilterVisitor implements Visitor{
 		data.show();
 		logger.info("data:=" + data);
 		
-		Transaction transaction = new Transaction(message.getDomain(), message.getTrx(), message.getTimestamp(), message.getData());
-		
-		if(!transactionRepository.findById(transaction.getId()).isPresent()) {
-			transactionRepository.save(transaction);
-		}else {
-			logger.info("Data Already Exist");
-			throw new DataAlreadyExistException("Data Already Exist for " + transaction.toString());
-		}
-		
-		MessageVO messageVO = new MessageVO();
-		
 		messageVO.setGroupName(mainrulename);
 		messageVO.setContainer(kieServerProperties.getContainer());
 		messageVO.setMessage(element.getMessage());
@@ -90,7 +84,8 @@ public class FilterVisitor implements Visitor{
 		
 		if(!messageVO.getGroupName().equals(mainrulename)) {
 			element.setGroupName(messageVO.getGroupName());
-		}		
+		}else {
+			throw new MainRuleNotMatchException("Error while getting ruleName from MainRule");
+		}
 	}
-
 }
