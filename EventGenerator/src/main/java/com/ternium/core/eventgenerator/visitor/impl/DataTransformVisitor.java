@@ -118,19 +118,17 @@ public class DataTransformVisitor implements Visitor{
 				
 				BasicQuery query = new BasicQuery(resolvedString);
 				List<Transaction> transactions = mongoOperation.find(query, Transaction.class);
-				logger.info("QUERY EXECUTED " );
+				logger.info("QUERY EXECUTED " + resolvedString + " Records :: " + (transactions!=null?transactions.size():0));
 				
 				if(transactions == null || transactions.size() < messageVO.getExpectedTrxs()) {
-					throw new EventRequiredRecordsAmountException("The requiered records amount is not reached for " + "Event " + element.getEvent() + "||Message " + element.getMessage());
+					logger.warn("The number of transactions to build the event is not yet completed. " + "Event " + element.getEvent() + "||Message " + element.getMessage());
+				}else {
+					eventDataMap = new HashMap();
+					for(Transaction cacheTransaction : transactions) {
+						eventDataMap.putAll(cacheTransaction.getData());
+					}
+					element.setEventDataMap(eventDataMap);
 				}
-				
-				eventDataMap = new HashMap();
-				
-				for(Transaction cacheTransaction : transactions) {
-					eventDataMap.putAll(cacheTransaction.getData());
-				}
-				
-				element.setEventDataMap(eventDataMap);
 			}
 		}
 	}

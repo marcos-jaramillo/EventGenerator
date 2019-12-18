@@ -38,28 +38,30 @@ public class MessageBuilderVisitor implements Visitor{
 	public void visit(EventElement element) throws Exception {
 		logger.info("Message received " + element.getMessage());
     	
-		element.getMessageObj().setEvent(element.getEvent());
-		
-		Message message = element.getMessageObj();
-		MessageVO messageVO = new MessageVO();
-		
-		messageVO.setGroupName(element.getGroupName());
-		messageVO.setContainer(kieServerProperties.getContainer());
-		messageVO.setMessage(element.getMessage());
-		messageVO.setMessageObj(element.getMessageObj());
-		messageVO.setEvent(element.getEvent());
-				
-		rulesMessenger.sendMessage(messageVO);
-		
-		if(messageVO.getTopic().isEmpty()) {
-			throw new TopicNotMatchException("Error while getting Topic for " + element.getMessage() + " from Rule " + element.getGroupName());
+		if(element.getEventDataMap() != null && !element.getEventDataMap().isEmpty()) {
+			element.getMessageObj().setEvent(element.getEvent());
+			
+			Message message = element.getMessageObj();
+			MessageVO messageVO = new MessageVO();
+			
+			messageVO.setGroupName(element.getGroupName());
+			messageVO.setContainer(kieServerProperties.getContainer());
+			messageVO.setMessage(element.getMessage());
+			messageVO.setMessageObj(element.getMessageObj());
+			messageVO.setEvent(element.getEvent());
+					
+			rulesMessenger.sendMessage(messageVO);
+			
+			if(messageVO.getTopic().isEmpty()) {
+				throw new TopicNotMatchException("Error while getting Topic for " + element.getMessage() + " from Rule " + element.getGroupName());
+			}
+			
+			KafkaMessage kafkaMessage = new KafkaMessage(message.getDomain(), message.getEvent(), String.valueOf(Calendar.getInstance().getTimeInMillis()), element.getEventDataMap());
+			
+			ObjectMapper objectMapper = new ObjectMapper();
+			
+	    	kafkaService.send(messageVO.getTopic(),objectMapper.writeValueAsString(kafkaMessage));
 		}
-		
-		KafkaMessage kafkaMessage = new KafkaMessage(message.getDomain(), message.getEvent(), String.valueOf(Calendar.getInstance().getTimeInMillis()), element.getEventDataMap());
-		
-		ObjectMapper objectMapper = new ObjectMapper();
-		
-    	kafkaService.send(messageVO.getTopic(),objectMapper.writeValueAsString(kafkaMessage));
 	}
 
 }
