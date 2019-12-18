@@ -122,6 +122,7 @@ public class DataTransformVisitor implements Visitor{
 				
 				if(transactions == null || transactions.size() < messageVO.getExpectedTrxs()) {
 					logger.warn("The number of transactions to build the event is not yet completed. " + "Event " + element.getEvent() + "||Message " + element.getMessage());
+					element.setEventDataMap(null);
 				}else {
 					eventDataMap = new HashMap();
 					for(Transaction cacheTransaction : transactions) {
