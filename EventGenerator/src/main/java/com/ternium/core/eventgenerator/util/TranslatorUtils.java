@@ -17,9 +17,9 @@ public class TranslatorUtils {
 		try {
 			translatorMap = objectMapper.readValue(translator, Map.class);
 			translatorMap.forEach((k,v)->{
-				String value = "";
+				Object value = "";
 				if(result.containsKey(k)){
-					value = (String)result.get(k);
+					value = result.get(k);
 					result.remove(k);
 					result.put(v, value);
 				}

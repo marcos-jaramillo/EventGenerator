@@ -20,13 +20,19 @@ public class Message implements java.io.Serializable {
 	private String jsonQuery;
 	private Boolean cache;
 	private Integer expectedTrxs;
+	private String jsonQueryChild;
+	private String tagChild;
+	private Boolean master;
 
+	
 	@Override
 	public String toString() {
 		return "Message [domain=" + domain + ", event=" + event + ", timestamp=" + timestamp + ", data=" + data
-				+ ", topic=" + topic + ", ruleName=" + ruleName + ", trx=" + trx + ", translatorMap=" + translatorMap + ", jsonQuery=" + jsonQuery 
-				+ ", cache=" + cache + ", expectedTrxs=" + expectedTrxs + "]";
+				+ ", topic=" + topic + ", ruleName=" + ruleName + ", trx=" + trx + ", translatorMap=" + translatorMap
+				+ ", jsonQuery=" + jsonQuery + ", cache=" + cache + ", expectedTrxs=" + expectedTrxs
+				+ ", jsonQueryChild=" + jsonQueryChild + ", tagChild=" + tagChild + ", master=" + master + "]";
 	}
+
 	public String getTrx() {
 		return trx;
 	}
@@ -113,7 +119,33 @@ public class Message implements java.io.Serializable {
 		this.expectedTrxs = expectedTrxs;
 	}
 	
-	public Message(String domain, String event, String timestamp, Map data, String topic, String ruleName, String trx, String translatorMap, String jsonQuery, Boolean cache, Integer expectedTrxs) {
+	public String getJsonQueryChild() {
+		return jsonQueryChild;
+	}
+
+	public void setJsonQueryChild(String jsonQueryChild) {
+		this.jsonQueryChild = jsonQueryChild;
+	}
+
+	public String getTagChild() {
+		return tagChild;
+	}
+
+	public void setTagChild(String tagChild) {
+		this.tagChild = tagChild;
+	}
+
+	public Boolean getMaster() {
+		return master;
+	}
+
+	public void setMaster(Boolean master) {
+		this.master = master;
+	}
+
+	public Message(String domain, String event, String timestamp, Map data, String topic, String ruleName, String trx,
+			String translatorMap, String jsonQuery, Boolean cache, Integer expectedTrxs, String jsonQueryChild,
+			String tagChild, Boolean master) {
 		super();
 		this.domain = domain;
 		this.event = event;
@@ -126,6 +158,9 @@ public class Message implements java.io.Serializable {
 		this.jsonQuery = jsonQuery;
 		this.cache = cache;
 		this.expectedTrxs = expectedTrxs;
+		this.jsonQueryChild = jsonQueryChild;
+		this.tagChild = tagChild;
+		this.master = master;
 	}
 
 	public Message() {

@@ -15,6 +15,9 @@ public class MessageVO {
 	private String translatorMap;
 	private Boolean cache;
 	private Integer expectedTrxs;
+	private String jsonQueryChild;
+	private String tagChild;
+	private Boolean master;	
 	
 	public String getMessage() {
 		return message;
@@ -96,14 +99,38 @@ public class MessageVO {
 	public void setExpectedTrxs(Integer expectedTrxs) {
 		this.expectedTrxs = expectedTrxs;
 	}
+	
+	
+	public String getJsonQueryChild() {
+		return jsonQueryChild;
+	}
+	public void setJsonQueryChild(String jsonQueryChild) {
+		this.jsonQueryChild = jsonQueryChild;
+	}
+	public String getTagChild() {
+		return tagChild;
+	}
+	public void setTagChild(String tagChild) {
+		this.tagChild = tagChild;
+	}
+	public Boolean getMaster() {
+		return master;
+	}
+	public void setMaster(Boolean master) {
+		this.master = master;
+	}
 	@Override
 	public String toString() {
 		return "MessageVO [message=" + message + ", outMessage=" + outMessage + ", groupName=" + groupName
 				+ ", messageObj=" + messageObj + ", estatusViaje=" + estatusViaje + ", topic=" + topic + ", container="
-				+ container + ", event=" + event + ", cache=" + cache + ", expectedTrxs=" + expectedTrxs + "]";
+				+ container + ", event=" + event + ", jsonQuery=" + jsonQuery + ", translatorMap=" + translatorMap
+				+ ", cache=" + cache + ", expectedTrxs=" + expectedTrxs + ", jsonQueryChild=" + jsonQueryChild
+				+ ", tagChild=" + tagChild + ", master=" + master + "]";
 	}
+	
 	public MessageVO(String message, String outMessage, String groupName, Message messageObj, Integer estatusViaje,
-			String topic, String container, String event, String jsonQuery, String translatorMap, Boolean cache, Integer expectedTrxs) {
+			String topic, String container, String event, String jsonQuery, String translatorMap, Boolean cache,
+			Integer expectedTrxs, String jsonQueryChild, String tagChild, Boolean master) {
 		super();
 		this.message = message;
 		this.outMessage = outMessage;
@@ -117,6 +144,9 @@ public class MessageVO {
 		this.translatorMap = translatorMap;
 		this.cache = cache;
 		this.expectedTrxs = expectedTrxs;
+		this.jsonQueryChild = jsonQueryChild;
+		this.tagChild = tagChild;
+		this.master = master;
 	}
 	public MessageVO() {
 		super();

@@ -40,6 +40,6 @@ kieserver:
   url: http://localhost:8080/kie-server/services/rest/server
   user: wbadmin
   password: wbadmin
-  container: Ternium_1.0.0-SNAPSHOT
+  container: ternium_1.0.0-SNAPSHOT
   mainrulename: FilterRules
   translatoragendarule: Translator

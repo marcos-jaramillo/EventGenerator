@@ -109,6 +109,19 @@ public class RulesMessenger implements IMessenger{
                 if(responseMessage.getExpectedTrxs() != null){
                 	message.setExpectedTrxs(responseMessage.getExpectedTrxs());
                 }
+                
+                if(responseMessage.getMaster() != null) {
+                	message.setMaster(responseMessage.getMaster());
+                }
+                
+                if(responseMessage.getTagChild() != null && !responseMessage.getTagChild().isEmpty()) {
+                	message.setTagChild(responseMessage.getTagChild());
+                }
+                
+                if(responseMessage.getJsonQueryChild() != null && !responseMessage.getJsonQueryChild().isEmpty()) {
+                	message.setJsonQueryChild(responseMessage.getJsonQueryChild());
+                }
+                
             } else {
             	logger.error("Error executing rules. Message: ");
             	logger.error(executeResponse.getMsg());

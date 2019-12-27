@@ -2,6 +2,7 @@ package com.ternium.core.eventgenerator.visitor.impl;
 
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -26,6 +27,7 @@ import com.ternium.core.eventgenerator.messenger.vo.Message;
 import com.ternium.core.eventgenerator.messenger.vo.MessageVO;
 import com.ternium.core.eventgenerator.repository.TransactionRepository;
 import com.ternium.core.eventgenerator.util.KieServerProperties;
+import com.ternium.core.eventgenerator.util.MessageBuilderHelper;
 import com.ternium.core.eventgenerator.util.TranslatorUtils;
 import com.ternium.core.eventgenerator.visitor.Visitor;
 import com.ternium.core.eventgenerator.visitor.element.EventElement;
@@ -46,6 +48,9 @@ public class DataTransformVisitor implements Visitor{
     @Autowired
     MongoTemplate mongoTemplate;
     
+    @Autowired
+    MessageBuilderHelper messageBuilderHelper;
+    
     @Value("${kieserver.translatoragendarule}")
 	private String translatorAgendaRule;
     
@@ -58,6 +63,11 @@ public class DataTransformVisitor implements Visitor{
 		Message message = element.getMessageObj();		
 		Map dataMap = null;
 		Map eventDataMap = null;
+		MongoOperations mongoOperation = (MongoOperations) mongoTemplate;
+		String resolvedString = null;
+		StringSubstitutor sub = null;
+		BasicQuery query = null;
+		List<Transaction> transactions = null;
 		
 		Transaction transaction = new Transaction(message.getDomain(), message.getTrx(), message.getTimestamp(), message.getData());
 		
@@ -98,6 +108,7 @@ public class DataTransformVisitor implements Visitor{
 			throw new EventNotFoundException("Error while validate the Event for " + element.getMessage() + " from rule  " + element.getGroupName());
 		}
 		
+		element.setEventDataMap(message.getData());
 		if(element.getCache()) {
 			if(!transactionRepository.findById(transaction.getId()).isPresent()) {
 				transactionRepository.save(transaction);
@@ -105,31 +116,35 @@ public class DataTransformVisitor implements Visitor{
 				logger.info("Data Already Exist");
 				throw new DataAlreadyExistException("Data Already Exist for " + transaction.toString());
 			}
-		}
 		
-		element.setEventDataMap(message.getData());
-		
-		if(element.getCache()) {
 			if(messageVO.getJsonQuery() != null && !messageVO.getJsonQuery().isEmpty()) {
-				MongoOperations mongoOperation = (MongoOperations) mongoTemplate;
+				sub = new StringSubstitutor(element.getMessageObj().getData());
+				resolvedString = sub.replace(messageVO.getJsonQuery());
 				
-				StringSubstitutor sub = new StringSubstitutor(element.getMessageObj().getData());
-				String resolvedString = sub.replace(messageVO.getJsonQuery());
-				
-				BasicQuery query = new BasicQuery(resolvedString);
-				List<Transaction> transactions = mongoOperation.find(query, Transaction.class);
+				query = new BasicQuery(resolvedString);
+				transactions = mongoOperation.find(query, Transaction.class);
 				logger.info("QUERY EXECUTED " + resolvedString + " Records :: " + (transactions!=null?transactions.size():0));
 				
 				if(transactions == null || transactions.size() < messageVO.getExpectedTrxs()) {
 					logger.warn("The number of transactions to build the event is not yet completed. " + "Event " + element.getEvent() + "||Message " + element.getMessage());
 					element.setEventDataMap(null);
 				}else {
-					eventDataMap = new HashMap();
-					for(Transaction cacheTransaction : transactions) {
-						eventDataMap.putAll(cacheTransaction.getData());
+					if(messageVO.getMaster()) {
+						eventDataMap = new HashMap();
+						for(Transaction cacheTransaction : transactions) {
+							eventDataMap.putAll(cacheTransaction.getData());
+						}
+						element.setEventDataMap(eventDataMap);
+					}else {
+						for(Transaction cacheTransaction : transactions) {
+							messageBuilderHelper.proccesMasterMessage(cacheTransaction, messageVO, element);
+							break;
+						}
 					}
-					element.setEventDataMap(eventDataMap);
 				}
+			}else if(messageVO.getMaster()) {
+				
+				messageBuilderHelper.proccesMasterMessage(transaction, messageVO, element);
 			}
 		}
 	}
