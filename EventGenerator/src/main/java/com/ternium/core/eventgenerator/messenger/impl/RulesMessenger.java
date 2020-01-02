@@ -122,6 +122,10 @@ public class RulesMessenger implements IMessenger{
                 	message.setJsonQueryChild(responseMessage.getJsonQueryChild());
                 }
                 
+                if(responseMessage.getOutputDataFields() != null && !responseMessage.getOutputDataFields().isEmpty()) {
+                	message.setOutputDataFields(responseMessage.getOutputDataFields());
+                }
+                
             } else {
             	logger.error("Error executing rules. Message: ");
             	logger.error(executeResponse.getMsg());

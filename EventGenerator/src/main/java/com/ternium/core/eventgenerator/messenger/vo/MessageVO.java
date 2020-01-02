@@ -18,6 +18,7 @@ public class MessageVO {
 	private String jsonQueryChild;
 	private String tagChild;
 	private Boolean master;	
+	private String outputDataFields;
 	
 	public String getMessage() {
 		return message;
@@ -67,21 +68,18 @@ public class MessageVO {
 	public void setEvent(String event) {
 		this.event = event;
 	}
-	
 	public String getJsonQuery() {
 		return jsonQuery;
 	}
 	public void setJsonQuery(String jsonQuery) {
 		this.jsonQuery = jsonQuery;
 	}
-	
 	public String getTranslatorMap() {
 		return translatorMap;
 	}
 	public void setTranslatorMap(String translatorMap) {
 		this.translatorMap = translatorMap;
 	}
-	
 	public Boolean getCache() {
 		if(cache==null) {
 			cache = Boolean.FALSE;
@@ -91,16 +89,12 @@ public class MessageVO {
 	public void setCache(Boolean cache) {
 		this.cache = cache;
 	}
-	
-	
 	public Integer getExpectedTrxs() {
 		return expectedTrxs;
 	}
 	public void setExpectedTrxs(Integer expectedTrxs) {
 		this.expectedTrxs = expectedTrxs;
 	}
-	
-	
 	public String getJsonQueryChild() {
 		return jsonQueryChild;
 	}
@@ -119,18 +113,26 @@ public class MessageVO {
 	public void setMaster(Boolean master) {
 		this.master = master;
 	}
+	public String getOutputDataFields() {
+		return outputDataFields;
+	}
+	public void setOutputDataFields(String outputDataFields) {
+		this.outputDataFields = outputDataFields;
+	}
+	
+	
 	@Override
 	public String toString() {
 		return "MessageVO [message=" + message + ", outMessage=" + outMessage + ", groupName=" + groupName
 				+ ", messageObj=" + messageObj + ", estatusViaje=" + estatusViaje + ", topic=" + topic + ", container="
 				+ container + ", event=" + event + ", jsonQuery=" + jsonQuery + ", translatorMap=" + translatorMap
 				+ ", cache=" + cache + ", expectedTrxs=" + expectedTrxs + ", jsonQueryChild=" + jsonQueryChild
-				+ ", tagChild=" + tagChild + ", master=" + master + "]";
+				+ ", tagChild=" + tagChild + ", master=" + master + ", outputDataFields=" + outputDataFields + "]";
 	}
 	
 	public MessageVO(String message, String outMessage, String groupName, Message messageObj, Integer estatusViaje,
 			String topic, String container, String event, String jsonQuery, String translatorMap, Boolean cache,
-			Integer expectedTrxs, String jsonQueryChild, String tagChild, Boolean master) {
+			Integer expectedTrxs, String jsonQueryChild, String tagChild, Boolean master, String outputDataFields) {
 		super();
 		this.message = message;
 		this.outMessage = outMessage;
@@ -147,6 +149,7 @@ public class MessageVO {
 		this.jsonQueryChild = jsonQueryChild;
 		this.tagChild = tagChild;
 		this.master = master;
+		this.outputDataFields = outputDataFields;
 	}
 	public MessageVO() {
 		super();

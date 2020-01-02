@@ -1,6 +1,7 @@
 package com.ternium.core.eventgenerator.visitor.impl;
 
 import java.util.Calendar;
+import java.util.Map;
 
 import org.json.JSONObject;
 import org.slf4j.Logger;
@@ -18,6 +19,7 @@ import com.ternium.core.eventgenerator.messenger.vo.KafkaMessage;
 import com.ternium.core.eventgenerator.messenger.vo.Message;
 import com.ternium.core.eventgenerator.messenger.vo.MessageVO;
 import com.ternium.core.eventgenerator.util.KieServerProperties;
+import com.ternium.core.eventgenerator.util.Utils;
 import com.ternium.core.eventgenerator.visitor.Visitor;
 import com.ternium.core.eventgenerator.visitor.element.EventElement;
 
@@ -37,6 +39,7 @@ public class MessageBuilderVisitor implements Visitor{
 	@Override
 	public void visit(EventElement element) throws Exception {
 		logger.info("Message received " + element.getMessage());
+		Map dataMap = null;
     	
 		if(element.getEventDataMap() != null && !element.getEventDataMap().isEmpty()) {
 			element.getMessageObj().setEvent(element.getEvent());
@@ -52,11 +55,16 @@ public class MessageBuilderVisitor implements Visitor{
 					
 			rulesMessenger.sendMessage(messageVO);
 			
-			if(messageVO.getTopic().isEmpty()) {
+			if(messageVO.getTopic() == null || messageVO.getTopic().isEmpty()) {
 				throw new TopicNotMatchException("Error while getting Topic for " + element.getMessage() + " from Rule " + element.getGroupName());
 			}
 			
-			KafkaMessage kafkaMessage = new KafkaMessage(message.getDomain(), message.getEvent(), String.valueOf(Calendar.getInstance().getTimeInMillis()), element.getEventDataMap());
+			dataMap = element.getEventDataMap();
+			if(messageVO.getOutputDataFields() != null && !messageVO.getOutputDataFields().isEmpty()) {
+				dataMap = Utils.copyMapFieldsValues(dataMap, messageVO.getOutputDataFields());
+			}
+			
+			KafkaMessage kafkaMessage = new KafkaMessage(message.getDomain(), message.getEvent(), String.valueOf(Calendar.getInstance().getTimeInMillis()), dataMap);
 			
 			ObjectMapper objectMapper = new ObjectMapper();
 			
