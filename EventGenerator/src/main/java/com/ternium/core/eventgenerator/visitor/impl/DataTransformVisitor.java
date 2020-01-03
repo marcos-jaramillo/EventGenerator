@@ -99,6 +99,8 @@ public class DataTransformVisitor implements Visitor{
 		element.setCache(messageVO.getCache());
 		element.setGroupName(messageVO.getGroupName());
 		element.setEvent(messageVO.getEvent());
+		element.setEventDomain(messageVO.getEventDomain());
+		
 		
 		if(element.getGroupName() == null || element.getGroupName().isEmpty()) {
 			throw new RuleNotMatchException("No Rule retrived for " + element.getMessage() + " from rule  " + element.getGroupName());

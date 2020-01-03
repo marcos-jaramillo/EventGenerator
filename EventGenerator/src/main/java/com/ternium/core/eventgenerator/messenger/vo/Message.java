@@ -24,6 +24,7 @@ public class Message implements java.io.Serializable {
 	private String tagChild;
 	private Boolean master;
 	private String outputDataFields;
+	private String eventDomain;
 
 	@Override
 	public String toString() {
@@ -31,7 +32,7 @@ public class Message implements java.io.Serializable {
 				+ ", topic=" + topic + ", ruleName=" + ruleName + ", trx=" + trx + ", translatorMap=" + translatorMap
 				+ ", jsonQuery=" + jsonQuery + ", cache=" + cache + ", expectedTrxs=" + expectedTrxs
 				+ ", jsonQueryChild=" + jsonQueryChild + ", tagChild=" + tagChild + ", master=" + master
-				+ ", outputDataFields=" + outputDataFields + "]";
+				+ ", outputDataFields=" + outputDataFields + ", eventDomain=" + eventDomain + "]";
 	}
 
 	public String getTrx() {
@@ -152,10 +153,20 @@ public class Message implements java.io.Serializable {
 	public void setOutputDataFields(String outputDataFields) {
 		this.outputDataFields = outputDataFields;
 	}
+	
+	
+
+	public String getEventDomain() {
+		return eventDomain;
+	}
+
+	public void setEventDomain(String eventDomain) {
+		this.eventDomain = eventDomain;
+	}
 
 	public Message(String domain, String event, String timestamp, Map data, String topic, String ruleName, String trx,
 			String translatorMap, String jsonQuery, Boolean cache, Integer expectedTrxs, String jsonQueryChild,
-			String tagChild, Boolean master, String outputDataFields) {
+			String tagChild, Boolean master, String outputDataFields, String eventDomain) {
 		super();
 		this.domain = domain;
 		this.event = event;
@@ -172,6 +183,7 @@ public class Message implements java.io.Serializable {
 		this.tagChild = tagChild;
 		this.master = master;
 		this.outputDataFields = outputDataFields;
+		this.eventDomain = eventDomain;
 	}
 
 	public Message() {

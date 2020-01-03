@@ -1,6 +1,7 @@
 package com.ternium.core.eventgenerator.visitor.impl;
 
 import java.util.Calendar;
+import java.util.EventObject;
 import java.util.Map;
 
 import org.json.JSONObject;
@@ -40,6 +41,7 @@ public class MessageBuilderVisitor implements Visitor{
 	public void visit(EventElement element) throws Exception {
 		logger.info("Message received " + element.getMessage());
 		Map dataMap = null;
+		String eventDomain = null;
     	
 		if(element.getEventDataMap() != null && !element.getEventDataMap().isEmpty()) {
 			element.getMessageObj().setEvent(element.getEvent());
@@ -64,7 +66,12 @@ public class MessageBuilderVisitor implements Visitor{
 				dataMap = Utils.copyMapFieldsValues(dataMap, messageVO.getOutputDataFields());
 			}
 			
-			KafkaMessage kafkaMessage = new KafkaMessage(message.getDomain(), message.getEvent(), String.valueOf(Calendar.getInstance().getTimeInMillis()), dataMap);
+			eventDomain = element.getEventDomain();
+			if(eventDomain == null || eventDomain.isEmpty()) {
+				eventDomain = message.getDomain();
+			}
+			
+			KafkaMessage kafkaMessage = new KafkaMessage(eventDomain, message.getEvent(), String.valueOf(Calendar.getInstance().getTimeInMillis()), dataMap);
 			
 			ObjectMapper objectMapper = new ObjectMapper();
 			

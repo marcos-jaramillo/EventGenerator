@@ -19,6 +19,7 @@ public class MessageVO {
 	private String tagChild;
 	private Boolean master;	
 	private String outputDataFields;
+	private String eventDomain;
 	
 	public String getMessage() {
 		return message;
@@ -118,8 +119,13 @@ public class MessageVO {
 	}
 	public void setOutputDataFields(String outputDataFields) {
 		this.outputDataFields = outputDataFields;
+	}	
+	public String getEventDomain() {
+		return eventDomain;
 	}
-	
+	public void setEventDomain(String eventDomain) {
+		this.eventDomain = eventDomain;
+	}
 	
 	@Override
 	public String toString() {
@@ -127,12 +133,13 @@ public class MessageVO {
 				+ ", messageObj=" + messageObj + ", estatusViaje=" + estatusViaje + ", topic=" + topic + ", container="
 				+ container + ", event=" + event + ", jsonQuery=" + jsonQuery + ", translatorMap=" + translatorMap
 				+ ", cache=" + cache + ", expectedTrxs=" + expectedTrxs + ", jsonQueryChild=" + jsonQueryChild
-				+ ", tagChild=" + tagChild + ", master=" + master + ", outputDataFields=" + outputDataFields + "]";
+				+ ", tagChild=" + tagChild + ", master=" + master + ", outputDataFields=" + outputDataFields
+				+ ", eventDomain=" + eventDomain + "]";
 	}
-	
 	public MessageVO(String message, String outMessage, String groupName, Message messageObj, Integer estatusViaje,
 			String topic, String container, String event, String jsonQuery, String translatorMap, Boolean cache,
-			Integer expectedTrxs, String jsonQueryChild, String tagChild, Boolean master, String outputDataFields) {
+			Integer expectedTrxs, String jsonQueryChild, String tagChild, Boolean master, String outputDataFields,
+			String eventDomain) {
 		super();
 		this.message = message;
 		this.outMessage = outMessage;
@@ -150,6 +157,7 @@ public class MessageVO {
 		this.tagChild = tagChild;
 		this.master = master;
 		this.outputDataFields = outputDataFields;
+		this.eventDomain = eventDomain;
 	}
 	public MessageVO() {
 		super();

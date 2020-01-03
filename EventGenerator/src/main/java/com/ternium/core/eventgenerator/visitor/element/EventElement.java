@@ -19,6 +19,7 @@ public class EventElement extends Element{
 	private ObjectMapper objectMapper = new ObjectMapper();
 	private Boolean cache;
 	private Map eventDataMap; 
+	private String eventDomain;
 	//Transform Strign message to DataSet
 	
 	@Override
@@ -74,6 +75,13 @@ public class EventElement extends Element{
 	}
 	public void setEventDataMap(Map eventDataMap) {
 		this.eventDataMap = eventDataMap;
+	}
+	
+	public String getEventDomain() {
+		return eventDomain;
+	}
+	public void setEventDomain(String eventDomain) {
+		this.eventDomain = eventDomain;
 	}
 	public void objToMessage() {
 		ObjectMapper objectMapper = new ObjectMapper();

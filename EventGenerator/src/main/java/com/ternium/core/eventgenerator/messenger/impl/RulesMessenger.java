@@ -126,6 +126,10 @@ public class RulesMessenger implements IMessenger{
                 	message.setOutputDataFields(responseMessage.getOutputDataFields());
                 }
                 
+                if(responseMessage.getEventDomain() != null && !responseMessage.getEventDomain().isEmpty()) {
+                	message.setEventDomain(responseMessage.getEventDomain());
+                }
+                
             } else {
             	logger.error("Error executing rules. Message: ");
             	logger.error(executeResponse.getMsg());
