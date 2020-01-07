@@ -43,3 +43,5 @@ kieserver:
   container: ternium_1.0.0-SNAPSHOT
   mainrulename: FilterRules
   translatoragendarule: Translator
+logging:
+  file: D:/Traslados/eventgenerator.log

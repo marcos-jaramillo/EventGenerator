@@ -7,6 +7,7 @@ import javax.annotation.Resource;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.slf4j.MDC;
 import org.springframework.stereotype.Service;
 
 import com.ternium.core.eventgenerator.visitor.Element;
@@ -29,8 +30,12 @@ public class EventGeneratorService {
 	public void processMessage(String message) {
 		ExecutorService executor = Executors.newSingleThreadExecutor();
 		executor.submit(() -> {
-			logger.info("Processing Message " + message);
 			try {
+				
+				MDC.put("process_id", String.valueOf(Thread.currentThread().getId()));
+				logger.info("Thread " + MDC.get("process_id") + " Processing Message " + message);
+				
+				
 				Element element = new EventElement(message);
 				
 				element.accept(filterVisitor);
