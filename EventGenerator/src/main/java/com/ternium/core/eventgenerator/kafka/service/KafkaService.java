@@ -15,7 +15,7 @@ public class KafkaService {
     private KafkaTemplate<String, String> kafkaTemplate;
 
     public void send(String topic, String message){
-    	logger.info("sending message='{}' to topic='{}'", message, topic);
+    	logger.info("Kafka Sending Message='{}' to topic='{}'", message, topic);
         kafkaTemplate.send(topic, message);
     }
 }

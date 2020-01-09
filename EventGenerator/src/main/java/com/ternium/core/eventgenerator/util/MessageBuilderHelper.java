@@ -16,7 +16,6 @@ import org.springframework.stereotype.Component;
 import com.ternium.core.eventgenerator.domain.Transaction;
 import com.ternium.core.eventgenerator.messenger.vo.MessageVO;
 import com.ternium.core.eventgenerator.visitor.element.EventElement;
-import com.ternium.core.eventgenerator.visitor.impl.DataTransformVisitor;
 
 @Component
 public class MessageBuilderHelper {
@@ -50,7 +49,7 @@ public class MessageBuilderHelper {
 				logger.info("QUERY EXECUTED " + resolvedString + " Records :: " + (transactions!=null?transactions.size():0));
 				
 				if(transactions == null || transactions.size() < messageVO.getExpectedTrxs()) {
-					logger.warn("The number of transactions to build the event is not yet completed. " + "Event " + element.getEvent() + "||Message " + element.getMessage());
+					logger.warn("The number of transactions to build the event is not yet completed. " + "Event " + element.getEvent());
 					element.setEventDataMap(null);
 					break;
 				}else {

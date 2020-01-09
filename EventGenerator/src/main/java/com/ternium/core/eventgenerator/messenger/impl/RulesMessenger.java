@@ -59,7 +59,7 @@ public class RulesMessenger implements IMessenger{
             String objectId = Calendar.getInstance().getTimeInMillis() + ruleMessage.getDomain() + ruleMessage.getEvent() + ruleMessage.getTimestamp();
             
             Command<?> insert = commandFactory.newInsert(ruleMessage, objectId);
-            logger.info("Going to call the group " + message.getGroupName());
+            logger.info("Going to call the agenda_group " + message.getGroupName());
             Command<?> agendaGroup = commandFactory.newAgendaGroupSetFocus(message.getGroupName());
             Command<?> fireAllRules = commandFactory.newFireAllRules();
             Command<?> getObjects = commandFactory.newGetObjects("message");
@@ -69,10 +69,9 @@ public class RulesMessenger implements IMessenger{
             ServiceResponse<ExecutionResults> executeResponse = rulesClient.executeCommandsWithResults(message.getContainer(), batchCommand);
         	
             if (executeResponse.getType() == KieServiceResponse.ResponseType.SUCCESS) {
-                System.out.println("Commands executed with success! Response: ");
                 Message responseMessage = (Message) executeResponse.getResult().getValue(objectId);
 
-                logger.info(("respuesta de objeto:" + responseMessage.toString()));
+                logger.info(("Kie Server Response:" + responseMessage.toString()));
                 
                 if (responseMessage.getRuleName() != null && !responseMessage.getRuleName().isEmpty()){
                     //Aqui recibira el nombre de la regla que quiere ejecutar
@@ -136,7 +135,7 @@ public class RulesMessenger implements IMessenger{
                 message.setEstatusViaje(0);
             }
         } catch (Exception e) {
-        	logger.error("Error executing rules. Message: " + e.getMessage());
+        	logger.error("Error executing rules. Message: " + e.getMessage(),e);
             message.setEstatusViaje(0);
         }
 	}

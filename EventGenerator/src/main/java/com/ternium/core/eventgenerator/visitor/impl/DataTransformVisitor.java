@@ -56,7 +56,7 @@ public class DataTransformVisitor implements Visitor{
     
 	@Override
 	public void visit(EventElement element) throws Exception {
-		logger.info("Apply Data Transform to " + element.getMessage());
+		logger.info("Apply DataTransform");
     	
 		MessageVO messageVO = new MessageVO();
 		String translatorMap = null;
@@ -103,11 +103,11 @@ public class DataTransformVisitor implements Visitor{
 		
 		
 		if(element.getGroupName() == null || element.getGroupName().isEmpty()) {
-			throw new RuleNotMatchException("No Rule retrived for " + element.getMessage() + " from rule  " + element.getGroupName());
+			throw new RuleNotMatchException("No Rule retrived from rule  " + element.getGroupName());
 		}
 		
 		if(element.getEvent() == null || element.getEvent().isEmpty()) {
-			throw new EventNotFoundException("Error while validate the Event for " + element.getMessage() + " from rule  " + element.getGroupName());
+			throw new EventNotFoundException("Error while validate the Event from rule  " + element.getGroupName());
 		}
 		
 		element.setEventDataMap(message.getData());
@@ -116,7 +116,7 @@ public class DataTransformVisitor implements Visitor{
 				transactionRepository.save(transaction);
 			}else {
 				logger.info("Data Already Exist");
-				throw new DataAlreadyExistException("Data Already Exist for " + transaction.toString());
+				throw new DataAlreadyExistException("Data Already Exist");
 			}
 		
 			if(messageVO.getJsonQuery() != null && !messageVO.getJsonQuery().isEmpty()) {
@@ -128,7 +128,7 @@ public class DataTransformVisitor implements Visitor{
 				logger.info("QUERY EXECUTED " + resolvedString + " Records :: " + (transactions!=null?transactions.size():0));
 				
 				if(transactions == null || transactions.size() < messageVO.getExpectedTrxs()) {
-					logger.warn("The number of transactions to build the event is not yet completed. " + "Event " + element.getEvent() + "||Message " + element.getMessage());
+					logger.warn("The number of transactions to build the event is not yet completed. " + "Event " + element.getEvent());
 					element.setEventDataMap(null);
 				}else {
 					if(messageVO.getMaster()) {

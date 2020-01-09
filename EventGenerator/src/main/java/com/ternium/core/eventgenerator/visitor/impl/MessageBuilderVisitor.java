@@ -39,7 +39,7 @@ public class MessageBuilderVisitor implements Visitor{
     
 	@Override
 	public void visit(EventElement element) throws Exception {
-		logger.info("Message received " + element.getMessage());
+		logger.info("Apply MeessageBuilder");
 		Map dataMap = null;
 		String eventDomain = null;
     	

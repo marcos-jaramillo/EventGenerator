@@ -31,17 +31,19 @@ public class EventGeneratorService {
 		ExecutorService executor = Executors.newSingleThreadExecutor();
 		executor.submit(() -> {
 			try {
-				
-				MDC.put("process_id", String.valueOf(Thread.currentThread().getId()));
-				logger.info("Thread " + MDC.get("process_id") + " Processing Message " + message);
-				
-				
 				Element element = new EventElement(message);
+				MDC.put("process_id", String.valueOf(Thread.currentThread().getId()));
+				MDC.put("trx", ((EventElement)element).getMessageObj().getTrx());
+				
+				
+				
+				logger.info("Start Thread " + MDC.get("process_id") + " Processing Message " + message);
 				
 				element.accept(filterVisitor);
 				element.accept(dataTransformVisitor);
 				element.accept(messageBuilderVisitor);
 				
+				logger.info("End Thread " + MDC.get("process_id"));
 			}catch (Exception e) {
 				// TODO: handle exception
 				logger.error("Error while processing message " + message, e );

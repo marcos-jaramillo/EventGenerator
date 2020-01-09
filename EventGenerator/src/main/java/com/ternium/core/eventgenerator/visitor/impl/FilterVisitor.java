@@ -42,13 +42,13 @@ public class FilterVisitor implements Visitor{
 	
 	@Autowired
 	IMessenger rulesMessenger;
-	
+	/*
 	@Autowired
     private SparkSession sparkSession;
 	
 	@Autowired
 	JavaSparkContext javaSparkContext;
-	
+	*/
 	@Autowired
 	TransactionRepository transactionRepository;
 	
@@ -62,10 +62,10 @@ public class FilterVisitor implements Visitor{
 	@Override
 	public void visit(EventElement element) throws Exception {
 		//Transform Strign message to DataSet
-		logger.info("Recieve message " + element.getMessage());
+		logger.info("Apply Filter");
 		Message message = element.getMessageObj();
 		MessageVO messageVO = new MessageVO();
-		
+		/*
 		SQLContext sqlContext = new SQLContext(javaSparkContext);
 		logger.info("SPARK Context Builded");	
 		
@@ -74,7 +74,7 @@ public class FilterVisitor implements Visitor{
 		Dataset<Row> data  = sparkSession.createDataset(jsonData, Encoders.STRING()).toDF();
 		data.show();
 		logger.info("data:=" + data);
-		
+		*/
 		messageVO.setGroupName(mainrulename);
 		messageVO.setContainer(kieServerProperties.getContainer());
 		messageVO.setMessage(element.getMessage());
