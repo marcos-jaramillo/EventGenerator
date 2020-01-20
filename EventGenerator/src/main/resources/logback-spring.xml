@@ -7,7 +7,7 @@
         class="ch.qos.logback.core.ConsoleAppender">
         <layout class="ch.qos.logback.classic.PatternLayout">
             <Pattern>
-                %black(%d{ISO8601}) %highlight(%-5level) [%blue(%t) %blue(%X{process_id})] [%X{trx}] %yellow(%C{1.}): %msg%n%throwable
+                %black(%d{ISO8601}) %highlight(%-5level) [%X{messageKey}] [%blue(%t)] [%X{domain}] [%X{trx}] %X{timestamp} %yellow(%logger{0}): %msg%n%throwable
             </Pattern>
         </layout>
     </appender>
@@ -17,7 +17,7 @@
         <file>${LOGS}/spring-boot-logger.log</file>
         <encoder
             class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
-            <Pattern>%d %p %C{1.} [%X{process_id}] [%X{trx}] %m%n</Pattern>
+            <Pattern>%d{yyyy-MM-dd HH:mm:ss.SSS}	%p	[%X{messageKey}]	[%logger{0}]	[%X{domain}]	[%X{trx}]	[%X{timestamp}]	[%X{event}]	[%X{topic}]	%m%n</Pattern>
         </encoder>
  
         <rollingPolicy

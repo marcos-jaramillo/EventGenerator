@@ -1,6 +1,5 @@
 package com.ternium.core.eventgenerator.messenger.vo;
 
-import java.util.HashMap;
 import java.util.Map;
 
 public class Message implements java.io.Serializable {

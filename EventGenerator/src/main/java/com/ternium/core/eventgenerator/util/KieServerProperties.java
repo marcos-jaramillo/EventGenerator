@@ -1,23 +1,17 @@
 package com.ternium.core.eventgenerator.util;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.io.InputStream;
 
+import org.drools.core.io.impl.UrlResource;
 import org.kie.api.KieServices;
-import org.kie.server.client.CredentialsProvider;
-import org.kie.server.client.KieServicesClient;
-import org.kie.server.client.KieServicesConfiguration;
-import org.kie.server.client.KieServicesFactory;
-import org.kie.server.client.RuleServicesClient;
-import org.kie.server.client.credentials.EnteredCredentialsProvider;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.kie.api.builder.KieModule;
+import org.kie.api.builder.KieRepository;
+import org.kie.api.runtime.KieContainer;
+import org.kie.api.runtime.StatelessKieSession;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.PropertySource;
-
-import com.ternium.core.eventgenerator.messenger.vo.Message;
 
 @Configuration
 @ConfigurationProperties(prefix = "application", ignoreUnknownFields = false)
@@ -80,6 +74,32 @@ public class KieServerProperties {
 	}	
 	
 	@Bean
+	public StatelessKieSession statelessKieSession() {
+		StatelessKieSession kieSession;
+        try{
+            String url = serverUrl;//"http://localhost:8080/business-central/maven2/com/stateless/ternium/1.0.0/ternium-1.0.0.jar";
+            KieServices kieServices = KieServices.Factory.get();
+            KieRepository kieRepository = kieServices.getRepository();
+            UrlResource urlResource = (UrlResource) kieServices.getResources().newUrlResource(url);
+            urlResource.setUsername(user);
+            urlResource.setPassword(userCredential);
+            urlResource.setBasicAuthentication("enabled");
+            InputStream is = urlResource.getInputStream();
+            KieModule kModule = kieRepository.addKieModule(kieServices.getResources().newInputStreamResource(is));
+            KieContainer kieContainer = kieServices.newKieContainer(kModule.getReleaseId());
+            	
+
+            kieSession = kieContainer.getKieBase().newStatelessKieSession();
+           
+            return kieSession;
+
+        }catch (Exception e){
+            e.printStackTrace();
+            return null;
+        }
+	}
+	/*
+	@Bean
 	public KieServices kieServices() {
 		return KieServices.Factory.get();
 	}
@@ -109,4 +129,5 @@ public class KieServerProperties {
 	public RuleServicesClient rulesClient(KieServicesClient kieServicesClient) {
 		return  kieServicesClient.getServicesClient(RuleServicesClient.class);
 	}
+	*/
 }

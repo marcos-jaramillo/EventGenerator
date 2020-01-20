@@ -7,6 +7,7 @@ import java.util.Map;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.slf4j.MDC;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -49,6 +50,13 @@ public class MessageBuilderVisitor implements Visitor{
 			Message message = element.getMessageObj();
 			MessageVO messageVO = new MessageVO();
 			
+			eventDomain = element.getEventDomain();
+			if(eventDomain == null || eventDomain.isEmpty()) {
+				eventDomain = message.getDomain();
+			}
+			
+			element.getMessageObj().setDomain(eventDomain);
+			
 			messageVO.setGroupName(element.getGroupName());
 			messageVO.setContainer(kieServerProperties.getContainer());
 			messageVO.setMessage(element.getMessage());
@@ -58,17 +66,14 @@ public class MessageBuilderVisitor implements Visitor{
 			rulesMessenger.sendMessage(messageVO);
 			
 			if(messageVO.getTopic() == null || messageVO.getTopic().isEmpty()) {
-				throw new TopicNotMatchException("Error while getting Topic for " + element.getMessage() + " from Rule " + element.getGroupName());
+				throw new TopicNotMatchException("Can not obtain the Topic for " + element.getMessage() + " from Rule " + element.getGroupName());
 			}
+			
+			MDC.put("topic", messageVO.getTopic());
 			
 			dataMap = element.getEventDataMap();
 			if(messageVO.getOutputDataFields() != null && !messageVO.getOutputDataFields().isEmpty()) {
 				dataMap = Utils.copyMapFieldsValues(dataMap, messageVO.getOutputDataFields());
-			}
-			
-			eventDomain = element.getEventDomain();
-			if(eventDomain == null || eventDomain.isEmpty()) {
-				eventDomain = message.getDomain();
 			}
 			
 			KafkaMessage kafkaMessage = new KafkaMessage(eventDomain, message.getEvent(), String.valueOf(Calendar.getInstance().getTimeInMillis()), dataMap);

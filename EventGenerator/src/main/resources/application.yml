@@ -37,7 +37,8 @@ management:
 server:
   port: 8081
 kieserver:
-  url: http://localhost:8080/kie-server/services/rest/server
+  #url: http://localhost:8080/kie-server/services/rest/server
+  url: http://localhost:8080/business-central/maven2/com/droolsrulesternium/ternium/1.0.0/ternium-1.0.0.jar
   user: wbadmin
   password: wbadmin
   container: ternium_1.0.0-SNAPSHOT

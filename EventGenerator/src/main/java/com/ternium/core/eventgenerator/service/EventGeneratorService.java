@@ -27,26 +27,35 @@ public class EventGeneratorService {
 	@Resource
 	Visitor messageBuilderVisitor;
 	
-	public void processMessage(String message) {
+	public void processMessage(String message, String messageKey) {
 		ExecutorService executor = Executors.newSingleThreadExecutor();
 		executor.submit(() -> {
 			try {
 				Element element = new EventElement(message);
-				MDC.put("process_id", String.valueOf(Thread.currentThread().getId()));
+				MDC.put("domain", ((EventElement)element).getMessageObj().getDomain());
 				MDC.put("trx", ((EventElement)element).getMessageObj().getTrx());
+				MDC.put("messageKey", messageKey);
+				MDC.put("timestamp", ((EventElement)element).getMessageObj().getTimestamp());
 				
 				
 				
-				logger.info("Start Thread " + MDC.get("process_id") + " Processing Message " + message);
+				//logger.info("Start Thread " + MDC.get("process_id") + " Processing Message " + message);
 				
 				element.accept(filterVisitor);
 				element.accept(dataTransformVisitor);
 				element.accept(messageBuilderVisitor);
 				
-				logger.info("End Thread " + MDC.get("process_id"));
+				logger.info("End Thread");
 			}catch (Exception e) {
 				// TODO: handle exception
-				logger.error("Error while processing message " + message, e );
+				logger.warn(e.getMessage());
+			}finally {
+				MDC.remove("domain");
+				MDC.remove("trx");
+				MDC.remove("messageKey");
+				MDC.remove("timestamp");
+				MDC.remove("event");
+				MDC.remove("topic");
 			}
 		});
 	}

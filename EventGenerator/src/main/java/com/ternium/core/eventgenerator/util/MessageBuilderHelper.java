@@ -46,7 +46,7 @@ public class MessageBuilderHelper {
 				
 				query = new BasicQuery(resolvedString);
 				transactions = mongoOperation.find(query, Transaction.class);
-				logger.info("QUERY EXECUTED " + resolvedString + " Records :: " + (transactions!=null?transactions.size():0));
+				//logger.info("QUERY EXECUTED " + resolvedString + " Records :: " + (transactions!=null?transactions.size():0));
 				
 				if(transactions == null || transactions.size() < messageVO.getExpectedTrxs()) {
 					logger.warn("The number of transactions to build the event is not yet completed. " + "Event " + element.getEvent());

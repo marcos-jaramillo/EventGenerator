@@ -9,6 +9,7 @@ import java.util.Map;
 import org.apache.commons.text.StringSubstitutor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.slf4j.MDC;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.mongodb.core.MongoOperations;
@@ -103,12 +104,14 @@ public class DataTransformVisitor implements Visitor{
 		
 		
 		if(element.getGroupName() == null || element.getGroupName().isEmpty()) {
-			throw new RuleNotMatchException("No Rule retrived from rule  " + element.getGroupName());
+			throw new RuleNotMatchException("No RuleName retrived from rule  " + element.getGroupName());
 		}
 		
 		if(element.getEvent() == null || element.getEvent().isEmpty()) {
-			throw new EventNotFoundException("Error while validate the Event from rule  " + element.getGroupName());
+			throw new EventNotFoundException("Can not obtain the Event from rule  " + element.getGroupName());
 		}
+		
+		MDC.put("event", element.getEvent());
 		
 		element.setEventDataMap(message.getData());
 		if(element.getCache()) {
@@ -125,7 +128,7 @@ public class DataTransformVisitor implements Visitor{
 				
 				query = new BasicQuery(resolvedString);
 				transactions = mongoOperation.find(query, Transaction.class);
-				logger.info("QUERY EXECUTED " + resolvedString + " Records :: " + (transactions!=null?transactions.size():0));
+				//logger.info("QUERY EXECUTED " + resolvedString + " Records :: " + (transactions!=null?transactions.size():0));
 				
 				if(transactions == null || transactions.size() < messageVO.getExpectedTrxs()) {
 					logger.warn("The number of transactions to build the event is not yet completed. " + "Event " + element.getEvent());

@@ -1,8 +1,5 @@
 package com.ternium.core.eventgenerator.util;
 
-import org.apache.spark.SparkConf;
-import org.apache.spark.api.java.JavaSparkContext;
-import org.apache.spark.sql.SparkSession;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
@@ -45,7 +42,7 @@ public class SparkProperties {
 	@Value("${spark.config.ssl}")
     private String ssl;
 	
-	@Bean
+	/*@Bean
     public SparkConf sparkConf() {
         SparkConf sparkConf = new SparkConf()
                 .setAppName(appName)
@@ -53,21 +50,21 @@ public class SparkProperties {
                 .setMaster(master);
 
         return sparkConf;
-    }
+    }*/
 	
-	@Bean
+	/*@Bean
     public JavaSparkContext javaSparkContext() {
         return new JavaSparkContext(sparkConf());
-    }
+    }*/
 
-    @Bean
+    /*@Bean
     public SparkSession sparkSession() {
         return SparkSession
                 .builder()
                 .sparkContext(javaSparkContext().sc())
                 .appName(appName)
                 .getOrCreate();
-    }
+    }*/
 
     @Bean
     public static PropertySourcesPlaceholderConfigurer propertySourcesPlaceholderConfigurer() {
