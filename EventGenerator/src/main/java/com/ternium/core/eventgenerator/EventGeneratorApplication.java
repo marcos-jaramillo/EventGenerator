@@ -12,10 +12,11 @@ import org.springframework.core.io.ResourceLoader;
 
 import com.ternium.core.eventgenerator.util.AgentServiceProperties;
 import com.ternium.core.eventgenerator.util.KieServerProperties;
+import com.ternium.core.eventgenerator.util.LoggingProperties;
 import com.ternium.core.eventgenerator.util.SparkProperties;
 
 @SpringBootApplication
-@EnableConfigurationProperties({SparkProperties.class, KieServerProperties.class, AgentServiceProperties.class})
+@EnableConfigurationProperties({SparkProperties.class, KieServerProperties.class, AgentServiceProperties.class, LoggingProperties.class})
 public class EventGeneratorApplication {
 	private static Logger logger = LoggerFactory.getLogger(EventGeneratorApplication.class); 
 

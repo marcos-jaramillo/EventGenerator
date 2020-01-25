@@ -1,4 +1,5 @@
 spring:
+  application:    name: EventGenerator
   cloud:
     stream:
       bindings:
@@ -44,3 +45,8 @@ kieserver:
   container: ternium_1.0.0-SNAPSHOT
   mainrulename: FilterRules
   translatoragendarule: Translator
+logging:  logstash:    enabled: true
+    host: 127.0.0.1
+    port: 5000
+    queue-size: 512  metrics:    logs:      enabled: false
+      report-frequency: 60

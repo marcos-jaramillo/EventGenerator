@@ -16,78 +16,141 @@
         <maven.compiler.source>${java.version}</maven.compiler.source>
         <maven.compiler.target>${java.version}</maven.compiler.target>
         
-		<org.apache.spark.spark-core.version>2.4.4</org.apache.spark.spark-core.version>
-		<org.apache.spark.spark-sql.version>2.4.4</org.apache.spark.spark-sql.version>
-		<org.apache.spark.spark-streaming.version>2.4.4</org.apache.spark.spark-streaming.version>
-		<org.apache.spark.spark-mllib.version>2.4.4</org.apache.spark.spark-mllib.version>
-		<org.apache.spark.spark-streaming-kafka.version>2.4.4</org.apache.spark.spark-streaming-kafka.version>
-		<com.datastax.spark.spark-cassandra-connector.version>2.4.4</com.datastax.spark.spark-cassandra-connector.version>
-		<com.datastax.spark.spark-cassandra-connector-java.version>1.5.2</com.datastax.spark.spark-cassandra-connector-java.version>
-		<org.springframework.kafka.spring-kafka.version>2.3.1.RELEASE</org.springframework.kafka.spring-kafka.version>
+		<org.springframework.kafka.spring-kafka.version>2.4.1.RELEASE</org.springframework.kafka.spring-kafka.version>
+		
+		<spring-boot.version>2.2.4.RELEASE</spring-boot.version>
+		<spring.version>5.2.3.RELEASE</spring.version>
+		<google-gson.version>2.8.6</google-gson.version>
+		<jackson.version>2.10.1</jackson.version>
+		<spring-cloud.version>3.0.1.RELEASE</spring-cloud.version>
+		<drools.version>7.32.0.k20191223</drools.version>
+		<kie.version>7.31.0.Final</kie.version>
+		<mongodb.version>2.2.0.RELEASE</mongodb.version>
+		<json.version>20190722</json.version>
+		<apache-commons.version>1.8</apache-commons.version>
+		<logback-logstash.version>6.3</logback-logstash.version>
 	</properties>
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
-			<version>2.1.9.RELEASE</version>
+			<version>${spring-boot.version}</version>
 		</dependency>
 		<dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-configuration-processor</artifactId>
-            <version>2.1.9.RELEASE</version>
+            <version>${spring-boot.version}</version>
             <scope>provided</scope>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter -->
+		<dependency>
+		    <groupId>org.springframework.boot</groupId>
+		    <artifactId>spring-boot-starter</artifactId>
+		    <version>${spring-boot.version}</version>
+		</dependency>
+        <!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-autoconfigure -->
+		<dependency>
+		    <groupId>org.springframework.boot</groupId>
+		    <artifactId>spring-boot-autoconfigure</artifactId>
+		    <version>${spring-boot.version}</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-logging -->
+		<dependency>
+		    <groupId>org.springframework.boot</groupId>
+		    <artifactId>spring-boot-starter-logging</artifactId>
+		    <version>${spring-boot.version}</version>
+		</dependency>
 		<dependency>
 		    <groupId>com.google.code.gson</groupId>
 		    <artifactId>gson</artifactId>
-		    <version>2.8.6</version>
+		    <version>${google-gson.version}</version>
 		</dependency>
-		<dependency>
-		    <groupId>org.springframework</groupId>
-		    <artifactId>spring-core</artifactId>
-		    <version>5.2.0.RELEASE</version>
-		</dependency>
-		<dependency>
-		    <groupId>org.springframework</groupId>
-		    <artifactId>spring-context</artifactId>
-		    <version>5.2.0.RELEASE</version>
-		</dependency>
-		
+		<!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind -->
 		<dependency>
 		    <groupId>com.fasterxml.jackson.core</groupId>
 		    <artifactId>jackson-databind</artifactId>
-		    <version>2.10.0</version>
+		    <version>${jackson.version}</version>
 		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.springframework/spring-context -->
+		<dependency>
+		    <groupId>org.springframework</groupId>
+		    <artifactId>spring-context</artifactId>
+		    <version>${spring.version}</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.springframework.cloud/spring-cloud-starter-stream-rabbit -->
 		<dependency>
 		    <groupId>org.springframework.cloud</groupId>
 		    <artifactId>spring-cloud-starter-stream-rabbit</artifactId>
-		    <version>2.2.1.RELEASE</version>
+		    <version>${spring-cloud.version}</version>
 		</dependency>
-        <dependency>
+		<dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-stream-test-support</artifactId>
             <scope>test</scope>
-            <version>2.2.1.RELEASE</version>
+            <version>${spring-cloud.version}</version>
         </dependency>
+        
+        <!-- https://mvnrepository.com/artifact/org.springframework/spring-web -->
+		<dependency>
+		    <groupId>org.springframework</groupId>
+		    <artifactId>spring-web</artifactId>
+		    <version>${spring.version}</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.springframework/spring-beans -->
+		<dependency>
+		    <groupId>org.springframework</groupId>
+		    <artifactId>spring-beans</artifactId>
+		    <version>${spring.version}</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.springframework/spring-core -->
+		<dependency>
+		    <groupId>org.springframework</groupId>
+		    <artifactId>spring-core</artifactId>
+		    <version>${spring.version}</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.springframework/spring-web -->
+		<dependency>
+		    <groupId>org.springframework</groupId>
+		    <artifactId>spring-web</artifactId>
+		    <version>${spring.version}</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-annotations -->
+		<dependency>
+		    <groupId>com.fasterxml.jackson.core</groupId>
+		    <artifactId>jackson-annotations</artifactId>
+		    <version>${jackson.version}</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-core -->
+		<dependency>
+		    <groupId>com.fasterxml.jackson.core</groupId>
+		    <artifactId>jackson-core</artifactId>
+		    <version>${jackson.version}</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.springframework.cloud/spring-cloud-stream-binder-rabbit -->
+		<dependency>
+		    <groupId>org.springframework.cloud</groupId>
+		    <artifactId>spring-cloud-stream-binder-rabbit</artifactId>
+		    <version>${spring-cloud.version}</version>
+		</dependency>
+        
         <!-- DROOLS START-->
         
-        <dependency>
-            <groupId>org.drools</groupId>
-            <artifactId>drools-compiler</artifactId>
-            <version>7.27.0.Final</version>
-        </dependency>
-       
-        
-            <dependency>
-        <groupId>org.drools</groupId>
-        <artifactId>drools-workbench-models-guided-template</artifactId>
-        <version>7.27.0.Final</version>
-    </dependency>
-    <dependency>
-        <groupId>org.drools</groupId>
-        <artifactId>drools-workbench-models-guided-dtable</artifactId>
-        <version>7.27.0.Final</version>
-    </dependency>
+		<!-- https://mvnrepository.com/artifact/org.drools/drools-compiler -->
+		<dependency>
+		    <groupId>org.drools</groupId>
+		    <artifactId>drools-compiler</artifactId>
+		    <version>${drools.version}</version>
+		</dependency>
+		<dependency>
+		    <groupId>org.drools</groupId>
+		    <artifactId>drools-workbench-models-guided-template</artifactId>
+		    <version>${drools.version}</version>
+		</dependency>
+		<dependency>
+		    <groupId>org.drools</groupId>
+		    <artifactId>drools-workbench-models-guided-dtable</artifactId>
+		    <version>${drools.version}</version>
+		</dependency>
 		
         <!-- https://mvnrepository.com/artifact/org.drools/drools-core -->
         
@@ -106,40 +169,15 @@
 		    <artifactId>kie-server-client</artifactId>
 		    <version>7.27.0.Final</version>
 		</dependency> -->	
+		
 		<!-- https://mvnrepository.com/artifact/org.kie.server/kie-server-api -->
 		<dependency>
 		    <groupId>org.kie.server</groupId>
 		    <artifactId>kie-server-api</artifactId>
-		    <version>7.25.0.Final</version>
+		    <version>${kie.version}</version>
 		</dependency>
-		        
         <!-- KIE SERVER END-->
-        <!-- SPARK START-->
-        <dependency>
-			<groupId>org.apache.spark</groupId>
-			<artifactId>spark-core_2.11</artifactId>
-			<version>${org.apache.spark.spark-core.version}</version>
-			<scope>provided</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.spark</groupId>
-			<artifactId>spark-sql_2.11</artifactId>
-			<version>${org.apache.spark.spark-sql.version}</version>
-			<scope>provided</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.spark</groupId>
-			<artifactId>spark-streaming_2.11</artifactId>
-			<version>${org.apache.spark.spark-streaming.version}</version>
-			<scope>provided</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.spark</groupId>
-			<artifactId>spark-mllib_2.11</artifactId>
-			<version>${org.apache.spark.spark-mllib.version}</version>
-			<scope>provided</scope>
-		</dependency>
-		<!-- SPARK END-->
+        
 		<!-- KAFKA END-->
 		<dependency>
 		    <groupId>org.springframework.kafka</groupId>
@@ -153,21 +191,28 @@
 		<dependency>
 		    <groupId>org.springframework.boot</groupId>
 		    <artifactId>spring-boot-starter-data-mongodb</artifactId>
-		    <version>2.2.0.RELEASE</version>
+		    <version>${mongodb.version}</version>
 		</dependency>
 		
 		<!-- https://mvnrepository.com/artifact/org.json/json -->
 		<dependency>
 		    <groupId>org.json</groupId>
 		    <artifactId>json</artifactId>
-		    <version>20190722</version>
+		    <version>${json.version}</version>
 		</dependency>
 		
 		<!-- https://mvnrepository.com/artifact/org.apache.commons/commons-text -->
 		<dependency>
 		    <groupId>org.apache.commons</groupId>
 		    <artifactId>commons-text</artifactId>
-		    <version>1.8</version>
+		    <version>${apache-commons.version}</version>		    
+		</dependency>
+		
+		<!-- https://mvnrepository.com/artifact/net.logstash.logback/logstash-logback-encoder -->
+		<dependency>
+		    <groupId>net.logstash.logback</groupId>
+		    <artifactId>logstash-logback-encoder</artifactId>
+		    <version>${logback-logstash.version}</version>	
 		</dependency>
 	</dependencies>
 	<build>

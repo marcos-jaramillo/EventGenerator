@@ -1,5 +1,6 @@
 package com.ternium.core.eventgenerator.visitor.element;
 
+import java.io.IOException;
 import java.util.Map;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -29,7 +30,7 @@ public class EventElement extends Element{
 	public String getMessage() {
 		return message;
 	}
-	public void setMessage(String message) throws JsonMappingException, JsonProcessingException {
+	public void setMessage(String message) throws JsonMappingException, JsonProcessingException, IOException{
 		this.message = message;
 		this.messageObj = objectMapper.readValue(message, Message.class);
 	}
@@ -40,7 +41,7 @@ public class EventElement extends Element{
 	public void setMessageObj(Message messageObj) {
 		this.messageObj = messageObj;
 	}
-	public EventElement(String message) throws JsonMappingException, JsonProcessingException {
+	public EventElement(String message) throws JsonMappingException, JsonProcessingException, IOException {
 		super();
 		this.message = message;
 		this.messageObj = objectMapper.readValue(message, Message.class);
