@@ -46,7 +46,8 @@ public class RulesMessenger implements IMessenger{
             transportMessage = new com.droolsrulesternium.ternium.Message(ruleMessage.getDomain(), ruleMessage.getEvent(), ruleMessage.getTimestamp(), ruleMessage.getData(),
             															ruleMessage.getTopic(), ruleMessage.getRuleName(), ruleMessage.getTrx(), ruleMessage.getTranslatorMap(),
             															ruleMessage.getJsonQuery(), ruleMessage.getCache(), ruleMessage.getExpectedTrxs(), ruleMessage.getJsonQueryChild(),
-            															ruleMessage.getTagChild(), ruleMessage.getMaster(), ruleMessage.getOutputDataFields(), ruleMessage.getEventDomain());
+            															ruleMessage.getTagChild(), ruleMessage.getMaster(), ruleMessage.getOutputDataFields(), ruleMessage.getEventDomain(), 
+            															ruleMessage.getDateFormats(), ruleMessage.getEnrichments(), ruleMessage.getNumericFormats());
             cmds.add(new InsertObjectCommand(transportMessage,objectId));
             cmds.add(new FireAllRulesCommand());
             logger.info("Sending Object: " + transportMessage.toString());
@@ -118,6 +119,18 @@ public class RulesMessenger implements IMessenger{
             if(responseMessage.getEventDomain() != null && !responseMessage.getEventDomain().isEmpty()) {
             	message.setEventDomain(responseMessage.getEventDomain());
             }
+            
+            if(responseMessage.getDateFormats() != null && !responseMessage.getDateFormats().isEmpty()) {
+            	message.setDateFormats(responseMessage.getDateFormats());
+            }
+            
+        	if(responseMessage.getEnrichments() != null && !responseMessage.getEnrichments().isEmpty()) {
+            	message.setEnrichments(responseMessage.getEnrichments());
+            }
+
+			if(responseMessage.getNumericFormats() != null && !responseMessage.getNumericFormats().isEmpty()) {
+				message.setNumericFormats(responseMessage.getNumericFormats());
+			}
             
 //        } else {
 //        	logger.error("Error executing rules. Message: ");

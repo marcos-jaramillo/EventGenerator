@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
  
+ 	<springProperty name="LOGSTASH_HOST" source="logging.logstash.host"/>
+ 	<springProperty name="LOGSTASH_ENABLED" source="logstash.logstash.enabled"/>
+ 	<springProperty name="LOGSTASH_PORT" source="logstash.logstash.port"/>
+ 	<springProperty name="LOGSTASH_QUEUE_SIZE" source="logstash.logstash.queue-size"/>
+ 	
     <property name="LOGS" value="./logs" />
  
     <appender name="Console"
@@ -32,16 +37,17 @@
         </rollingPolicy>
     </appender>
      
+    <!-- 
+    <appender name="STASH" class="net.logstash.logback.appender.LogstashTcpSocketAppender">
+        <destination>${LOGSTASH_HOST}:${LOGSTASH_PORT}</destination>
+        <encoder class="net.logstash.logback.encoder.LogstashEncoder" />
+    </appender>
+     -->
     <!-- LOG everything at INFO level -->
     <root level="info">
         <appender-ref ref="RollingFile" />
         <appender-ref ref="Console" />
+        <!-- appender-ref ref="STASH" /-->
     </root>
- 
-    <!-- LOG "com.baeldung*" at TRACE level -->
-    <logger name="com.baeldung" level="trace" additivity="false">
-        <appender-ref ref="RollingFile" />
-        <appender-ref ref="Console" />
-    </logger>
  
 </configuration>

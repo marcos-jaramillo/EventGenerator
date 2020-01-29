@@ -21,6 +21,10 @@ public class MessageVO {
 	private String outputDataFields;
 	private String eventDomain;
 	
+	private String dateFormats;
+	private String enrichments;
+	private String numericFormats;
+	
 	public String getMessage() {
 		return message;
 	}
@@ -126,7 +130,24 @@ public class MessageVO {
 	public void setEventDomain(String eventDomain) {
 		this.eventDomain = eventDomain;
 	}
-	
+	public String getDateFormats() {
+		return dateFormats;
+	}
+	public void setDateFormats(String dateFormats) {
+		this.dateFormats = dateFormats;
+	}
+	public String getEnrichments() {
+		return enrichments;
+	}
+	public void setEnrichments(String enrichments) {
+		this.enrichments = enrichments;
+	}
+	public String getNumericFormats() {
+		return numericFormats;
+	}
+	public void setNumericFormats(String numericFormats) {
+		this.numericFormats = numericFormats;
+	}
 	@Override
 	public String toString() {
 		return "MessageVO [message=" + message + ", outMessage=" + outMessage + ", groupName=" + groupName
@@ -134,12 +155,14 @@ public class MessageVO {
 				+ container + ", event=" + event + ", jsonQuery=" + jsonQuery + ", translatorMap=" + translatorMap
 				+ ", cache=" + cache + ", expectedTrxs=" + expectedTrxs + ", jsonQueryChild=" + jsonQueryChild
 				+ ", tagChild=" + tagChild + ", master=" + master + ", outputDataFields=" + outputDataFields
-				+ ", eventDomain=" + eventDomain + "]";
+				+ ", eventDomain=" + eventDomain + ", dateFormats=" + dateFormats + ", enrichments=" + enrichments
+				+ ", numericFormats=" + numericFormats + "]";
 	}
+	
 	public MessageVO(String message, String outMessage, String groupName, Message messageObj, Integer estatusViaje,
 			String topic, String container, String event, String jsonQuery, String translatorMap, Boolean cache,
 			Integer expectedTrxs, String jsonQueryChild, String tagChild, Boolean master, String outputDataFields,
-			String eventDomain) {
+			String eventDomain, String dateFormats, String enrichments, String numericFormats) {
 		super();
 		this.message = message;
 		this.outMessage = outMessage;
@@ -158,6 +181,9 @@ public class MessageVO {
 		this.master = master;
 		this.outputDataFields = outputDataFields;
 		this.eventDomain = eventDomain;
+		this.dateFormats = dateFormats;
+		this.enrichments = enrichments;
+		this.numericFormats = numericFormats;
 	}
 	public MessageVO() {
 		super();

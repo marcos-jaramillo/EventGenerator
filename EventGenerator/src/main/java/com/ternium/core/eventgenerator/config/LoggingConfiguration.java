@@ -5,11 +5,13 @@ import java.util.Iterator;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.slf4j.MDC;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 
 import com.ternium.core.eventgenerator.util.LoggingProperties;
+import com.ternium.core.eventgenerator.visitor.element.EventElement;
 
 import ch.qos.logback.classic.AsyncAppender;
 import ch.qos.logback.classic.Level;
@@ -26,7 +28,6 @@ import net.logstash.logback.encoder.LogstashEncoder;
 import net.logstash.logback.stacktrace.ShortenedThrowableConverter;
 
 
-@Configuration
 public class LoggingConfiguration {
 	private static final String LOGSTASH_APPENDER_NAME = "LOGSTASH";
 
@@ -73,20 +74,34 @@ public class LoggingConfiguration {
         logstashAppender.setName(LOGSTASH_APPENDER_NAME);
         logstashAppender.setContext(context);
         String optionalFields = "";
-        String customFields = "{\"app_name\":\"" + appName + "\",\"app_port\":\"" + serverPort + "\"," +
-            optionalFields + "\"version\":\"" + version + "\"}";
-
+        StringBuffer customFields = new StringBuffer();
+        
+        customFields.append("{")
+        .append("\"app_name\":\"" + appName + "\"").append(",")
+        .append("\"app_port\":\"" + serverPort + "\"").append(",")
+        .append("\"version\":\"" + version + "\"").append(",")
+        .append("\"messageKey\":\"" + MDC.get("messageKey") + "\"").append(",")
+        .append("\"domain\":\"" + MDC.get("domain") + "\"").append(",")
+        .append("\"trx\":\"" + MDC.get("trx") + "\"").append(",")
+        .append("\"event\":\"" + MDC.get("event") + "\"").append(",")
+        .append("\"topic\":\"" + MDC.get("topic") + "\"")
+        .append("}");
+                
+        //<Pattern>%d{yyyy-MM-dd HH:mm:ss.SSS}	%p	[%X{messageKey}]	[%logger{0}]	[%X{domain}]	[%X{trx}]	[%X{timestamp}]	[%X{event}]	[%X{topic}]	%m%n</Pattern>
+        
         // More documentation is available at: https://github.com/logstash/logstash-logback-encoder
         LogstashEncoder logstashEncoder = new LogstashEncoder();
         // Set the Logstash appender config from JHipster properties
-        logstashEncoder.setCustomFields(customFields);
+        logstashEncoder.setCustomFields(customFields.toString());
         // Set the Logstash appender config from JHipster properties
         logstashAppender.addDestinations(new InetSocketAddress(loggingProperties.getLogstash().getHost(), loggingProperties.getLogstash().getPort()));
 
         ShortenedThrowableConverter throwableConverter = new ShortenedThrowableConverter();
         throwableConverter.setRootCauseFirst(true);
         logstashEncoder.setThrowableConverter(throwableConverter);
-        logstashEncoder.setCustomFields(customFields);
+        logstashEncoder.setCustomFields(customFields.toString());
+        	
+        //logstashEncoder.set
 
         logstashAppender.setEncoder(logstashEncoder);
         logstashAppender.start();

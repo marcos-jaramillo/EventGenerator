@@ -19,6 +19,7 @@ import org.springframework.data.mongodb.core.query.BasicQuery;
 import org.springframework.stereotype.Component;
 
 import com.ternium.core.eventgenerator.domain.Transaction;
+import com.ternium.core.eventgenerator.enrichment.utils.EnrichmentUtils;
 import com.ternium.core.eventgenerator.exception.DataAlreadyExistException;
 import com.ternium.core.eventgenerator.exception.EventNotFoundException;
 import com.ternium.core.eventgenerator.exception.EventRequiredRecordsAmountException;
@@ -27,6 +28,7 @@ import com.ternium.core.eventgenerator.messenger.IMessenger;
 import com.ternium.core.eventgenerator.messenger.vo.Message;
 import com.ternium.core.eventgenerator.messenger.vo.MessageVO;
 import com.ternium.core.eventgenerator.repository.TransactionRepository;
+import com.ternium.core.eventgenerator.util.DataFormatsUtils;
 import com.ternium.core.eventgenerator.util.KieServerProperties;
 import com.ternium.core.eventgenerator.util.MessageBuilderHelper;
 import com.ternium.core.eventgenerator.util.TranslatorUtils;
@@ -150,6 +152,16 @@ public class DataTransformVisitor implements Visitor{
 			}else if(messageVO.getMaster()) {
 				
 				messageBuilderHelper.proccesMasterMessage(transaction, messageVO, element);
+			}
+		}
+		
+		if(element.getEventDataMap() != null) {
+			if(messageVO.getEnrichments() != null && !messageVO.getEnrichments().isEmpty()) {
+				EnrichmentUtils.processEnrichments(element.getEventDataMap(), messageVO.getEnrichments());
+			}
+			
+			if(messageVO.getDateFormats() != null && !messageVO.getDateFormats().isEmpty()) {
+				DataFormatsUtils.applyDateDataFormat(element.getEventDataMap(), messageVO.getDateFormats());
 			}
 		}
 	}

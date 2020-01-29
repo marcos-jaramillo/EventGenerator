@@ -27,6 +27,10 @@ public class Message implements java.io.Serializable {
 	private java.lang.String tagChild;
 	private java.lang.Boolean master;
 	private java.lang.String eventDomain;
+	
+	private java.lang.String dateFormats;
+	private java.lang.String enrichments;
+	private java.lang.String numericFormats;
 
 	public Message() {
 	}
@@ -173,9 +177,30 @@ public class Message implements java.io.Serializable {
 		this.eventDomain = eventDomain;
 	}
 
+	public java.lang.String getDateFormats() {
+		return this.dateFormats;
+	}
+	public void setDateFormats(java.lang.String dateFormats) {
+		this.dateFormats = dateFormats;
+	}
+	
+	public java.lang.String getEnrichments() {
+		return this.enrichments;
+	}
+	public void setEnrichments(java.lang.String enrichments) {
+		this.enrichments = enrichments;
+	}
+	
+	public java.lang.String getNumericFormats() {
+		return this.numericFormats;
+	}
+	public void setNumericFormats(java.lang.String numericFormats) {
+		this.numericFormats = numericFormats;
+	}
 	public Message(String domain, String event, String timestamp, java.util.Map data, String topic, String ruleName, String trx,
 			String translatorMap, String jsonQuery, Boolean cache, Integer expectedTrxs, String jsonQueryChild,
-			String tagChild, Boolean master, String outputDataFields, java.lang.String eventDomain) {
+			String tagChild, Boolean master, String outputDataFields, java.lang.String eventDomain, java.lang.String dateFormats,
+			java.lang.String enrichments, java.lang.String numericFormats) {
 		super();
 		this.domain = domain;
 		this.event = event;
@@ -193,6 +218,8 @@ public class Message implements java.io.Serializable {
 		this.master = master;
 		this.outputDataFields = outputDataFields;
 		this.eventDomain = eventDomain;
+		this.dateFormats = dateFormats;
+		this.enrichments = enrichments;
+		this.numericFormats = numericFormats;
 	}
-
 }

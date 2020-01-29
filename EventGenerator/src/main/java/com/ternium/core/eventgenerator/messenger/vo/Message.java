@@ -24,6 +24,10 @@ public class Message implements java.io.Serializable {
 	private Boolean master;
 	private String outputDataFields;
 	private String eventDomain;
+	
+	private String dateFormats;
+	private String enrichments;
+	private String numericFormats;
 
 	@Override
 	public String toString() {
@@ -152,20 +156,11 @@ public class Message implements java.io.Serializable {
 	public void setOutputDataFields(String outputDataFields) {
 		this.outputDataFields = outputDataFields;
 	}
-	
-	
-
-	public String getEventDomain() {
-		return eventDomain;
-	}
-
-	public void setEventDomain(String eventDomain) {
-		this.eventDomain = eventDomain;
-	}
-
+		
 	public Message(String domain, String event, String timestamp, Map data, String topic, String ruleName, String trx,
 			String translatorMap, String jsonQuery, Boolean cache, Integer expectedTrxs, String jsonQueryChild,
-			String tagChild, Boolean master, String outputDataFields, String eventDomain) {
+			String tagChild, Boolean master, String outputDataFields, String eventDomain, String dateFormats,
+			String enrichments, String numericFormats) {
 		super();
 		this.domain = domain;
 		this.event = event;
@@ -183,6 +178,41 @@ public class Message implements java.io.Serializable {
 		this.master = master;
 		this.outputDataFields = outputDataFields;
 		this.eventDomain = eventDomain;
+		this.dateFormats = dateFormats;
+		this.enrichments = enrichments;
+		this.numericFormats = numericFormats;
+	}
+
+	public String getEventDomain() {
+		return eventDomain;
+	}
+
+	public void setEventDomain(String eventDomain) {
+		this.eventDomain = eventDomain;
+	}
+	
+	public String getDateFormats() {
+		return dateFormats;
+	}
+
+	public void setDateFormats(String dateFormats) {
+		this.dateFormats = dateFormats;
+	}
+
+	public String getEnrichments() {
+		return enrichments;
+	}
+
+	public void setEnrichments(String enrichments) {
+		this.enrichments = enrichments;
+	}
+
+	public String getNumericFormats() {
+		return numericFormats;
+	}
+
+	public void setNumericFormats(String numericFormats) {
+		this.numericFormats = numericFormats;
 	}
 
 	public Message() {
