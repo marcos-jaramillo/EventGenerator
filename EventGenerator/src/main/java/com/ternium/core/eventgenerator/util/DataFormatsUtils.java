@@ -17,6 +17,7 @@ import org.slf4j.LoggerFactory;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ternium.core.eventgenerator.exception.InvalidDataFormatException;
+import com.ternium.core.eventgenerator.exception.InvalidEnrichmentDataException;
 
 public class DataFormatsUtils {
 	private static Logger logger = LoggerFactory.getLogger(DataFormatsUtils.class);
@@ -48,7 +49,8 @@ public class DataFormatsUtils {
 			while(itMap.hasNext()) {
 				key = itMap.next();
 				
-				keyValue = dataMap.get(key).toString();
+				keyValue = getValue(dataMap, key);// dataMap.get(key).toString();
+				
 				resultValue = "";
 				
 				formatObjectDef = objJson.get(key);
@@ -79,7 +81,9 @@ public class DataFormatsUtils {
 								
 								dateFormat = new SimpleDateFormat(outputFormat);
 								resultValue = dateFormat.format(formatCalendar.getTime());
-								dataMap.put(key, resultValue);
+								
+								setValue(dataMap, key, resultValue);
+								//dataMap.put(key, resultValue);
 							}else {
 								throw new InvalidDataFormatException("Output_Format is required for field " + key + ", please validate the output_format defined");
 							}
@@ -101,7 +105,8 @@ public class DataFormatsUtils {
 								dateFormat = new SimpleDateFormat(outputFormat);
 								resultValue = dateFormat.format(date);
 								
-								dataMap.put(key, resultValue);
+								setValue(dataMap, key, resultValue);
+								//dataMap.put(key, resultValue);
 								
 							}else {
 								throw new InvalidDataFormatException("Input_Format and Output_Format is required for field " + key + ", please validate");
@@ -116,6 +121,68 @@ public class DataFormatsUtils {
 			}
 		}catch (Exception e) {
 			throw new InvalidDataFormatException("Error while convert DataFormat Json");
+		}
+	}
+	
+	public static String getValue(Map dataMap, String key) throws InvalidDataFormatException{
+		String val = key;
+		String value = "";
+		String[] dataPath;
+		Object pathValue = null;
+		
+		if(val.contains(".")) {
+			dataPath = val.split("\\.");
+			pathValue = null;
+			for(String path : dataPath) {
+				if(path!=null && !path.isEmpty()) {
+					if(pathValue != null) {
+						pathValue = ((Map)pathValue).get(path);
+					}else {
+						pathValue = dataMap.get(path);
+					}
+				}
+			}
+			if(pathValue instanceof Map) {
+				throw new InvalidDataFormatException("Plain value required, Complex type object found when evaluate this field " + val );
+			}
+			value=pathValue.toString();
+			
+		}else {
+			value=dataMap.get(val).toString();
+		}
+		
+		return value;
+	}
+	
+	public static void setValue(Map dataMap, String key, String newValue) throws InvalidDataFormatException{
+		String[] dataPath;
+		Object pathValue = null;
+		Object lastLevel = null;
+		String lastpath = "";
+		
+		if(key.contains(".")) {
+			dataPath = key.split("\\.");
+			pathValue = null;
+			for(String path : dataPath) {
+				if(path!=null && !path.isEmpty()) {
+					if(pathValue != null) {
+						pathValue = ((Map)pathValue).get(path);
+					}else {
+						pathValue = dataMap.get(path);
+					}
+					if(pathValue instanceof Map) {
+						lastLevel = pathValue;
+					}
+					lastpath = path;
+				}
+			}
+			if(pathValue instanceof Map) {
+				throw new InvalidDataFormatException("Plain value required, Complex type object found when evaluate this field " + key );
+			}
+			((Map)lastLevel).put(lastpath, newValue);
+			
+		}else {
+			dataMap.put(key, newValue);
 		}
 	}
 }

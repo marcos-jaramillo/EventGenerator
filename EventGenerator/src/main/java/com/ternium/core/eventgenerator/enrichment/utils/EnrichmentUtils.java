@@ -40,61 +40,105 @@ public class EnrichmentUtils {
 		}
 	}
 	
-	public static String getValue(Map dataMap , Map data, String key) {
+	public static String getValue(Map dataMap , Map data, String key) throws InvalidEnrichmentDataException{
 		Object value = data.get(key);
 		String valueString =null;
 		String resultValue = "";
 		Map objMap = null;
 		List lstvalues;
 		String[] values = null;
+		String[] dataPath;
+		Object pathValue = null;
+		
 		
 		String keyObj = "";
 		Object valueObj = null;
-		if(value instanceof Map) {
-			objMap = (Map)value;
-			Iterator<String> itMap = objMap.keySet().iterator();
-			while(itMap.hasNext()) {
-				keyObj = itMap.next();
-				value = objMap.get(keyObj);
-				resultValue+= getValue(dataMap, objMap, keyObj);
-			}
-		}else if(value instanceof String) {
-			valueString = value.toString();
-			values = valueString.split(Constants.PARAM_SEPARATOR);
-			for(String val :values) {
-				if(val != null && !val.isEmpty()) {
-					if(val.contains("'")) {
-						resultValue+= val.replaceAll("'", "");
-					}else {
-						resultValue+=dataMap.get(val);
-					}
+		try {
+			if(value instanceof Map) {
+				objMap = (Map)value;
+				Iterator<String> itMap = objMap.keySet().iterator();
+				while(itMap.hasNext()) {
+					keyObj = itMap.next();
+					value = objMap.get(keyObj);
+					resultValue+= getValue(dataMap, objMap, keyObj);
 				}
-			}
-			
-			
-		}else if(value instanceof List) {
-			lstvalues = (List)value;
-			for(Object val : lstvalues) {
-				if(val instanceof String) {
-					if(val != null && !val.toString().isEmpty()) {
-						if(val.toString().contains("'")) {
-							resultValue+= val.toString().replaceAll("'", "");
+			}else if(value instanceof String) {
+				valueString = value.toString();
+				values = valueString.split(Constants.PARAM_SEPARATOR);
+				for(String val :values) {
+					if(val != null && !val.isEmpty()) {
+						if(val.contains("'")) {
+							resultValue+= val.replaceAll("'", "");
 						}else {
-							resultValue+=dataMap.get(val.toString());
+							if(val.contains(".")) {
+								dataPath = val.split("\\.");
+								pathValue = null;
+								for(String path : dataPath) {
+									if(path!=null && !path.isEmpty()) {
+										if(pathValue != null) {
+											pathValue = ((Map)pathValue).get(path);
+										}else {
+											pathValue = dataMap.get(path);
+										}
+									}
+								}
+								if(pathValue instanceof Map) {
+									throw new InvalidEnrichmentDataException("Plain value required, Complex type object found when evaluate this field " + val );
+								}
+								resultValue+=pathValue.toString();
+								
+							}else {
+								resultValue+=dataMap.get(val);
+							}
 						}
 					}
-				}else if(val instanceof Map) {
-					objMap = (Map)val;
-					Iterator<String> itMap = objMap.keySet().iterator();
-					while(itMap.hasNext()) {
-						keyObj = itMap.next();
-						value = objMap.get(keyObj);
-						resultValue+= getValue(dataMap, objMap, keyObj);
+				}
+				
+				
+			}else if(value instanceof List) {
+				lstvalues = (List)value;
+				for(Object val : lstvalues) {
+					if(val instanceof String) {
+						if(val != null && !val.toString().isEmpty()) {
+							if(val.toString().contains("'")) {
+								resultValue+= val.toString().replaceAll("'", "");
+							}else {
+								if(val.toString().contains(".")) {
+									dataPath = val.toString().split("\\.");
+									pathValue = null;
+									for(String path : dataPath) {
+										if(path!=null && !path.isEmpty()) {
+											if(pathValue != null) {
+												pathValue = ((Map)pathValue).get(path);
+											}else {
+												pathValue = dataMap.get(path);
+											}
+										}
+									}
+									if(pathValue instanceof Map) {
+										throw new InvalidEnrichmentDataException("Plain value required, Complex type object found when evaluate this field " + val.toString() );
+									}
+									resultValue+=pathValue.toString();
+									
+								}else {
+									resultValue+=dataMap.get(val.toString());
+								}
+							}
+						}
+					}else if(val instanceof Map) {
+						objMap = (Map)val;
+						Iterator<String> itMap = objMap.keySet().iterator();
+						while(itMap.hasNext()) {
+							keyObj = itMap.next();
+							value = objMap.get(keyObj);
+							resultValue+= getValue(dataMap, objMap, keyObj);
+						}
 					}
 				}
 			}
+		}catch (Exception e) {
+			throw new InvalidEnrichmentDataException("Can not evaluate this field " + key );
 		}
-		
 		return resultValue;
 	}
 }
