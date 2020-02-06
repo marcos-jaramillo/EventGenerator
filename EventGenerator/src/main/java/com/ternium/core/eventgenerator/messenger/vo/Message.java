@@ -28,6 +28,11 @@ public class Message implements java.io.Serializable {
 	private String dateFormats;
 	private String enrichments;
 	private String numericFormats;
+	
+	private Boolean deleteOnComplete;
+	private String deleteByQuery;
+
+	
 
 	@Override
 	public String toString() {
@@ -35,7 +40,25 @@ public class Message implements java.io.Serializable {
 				+ ", topic=" + topic + ", ruleName=" + ruleName + ", trx=" + trx + ", translatorMap=" + translatorMap
 				+ ", jsonQuery=" + jsonQuery + ", cache=" + cache + ", expectedTrxs=" + expectedTrxs
 				+ ", jsonQueryChild=" + jsonQueryChild + ", tagChild=" + tagChild + ", master=" + master
-				+ ", outputDataFields=" + outputDataFields + ", eventDomain=" + eventDomain + "]";
+				+ ", outputDataFields=" + outputDataFields + ", eventDomain=" + eventDomain + ", dateFormats="
+				+ dateFormats + ", enrichments=" + enrichments + ", numericFormats=" + numericFormats
+				+ ", deleteOnComplete=" + deleteOnComplete + ", deleteByQuery=" + deleteByQuery + "]";
+	}
+
+	public Boolean getDeleteOnComplete() {
+		return deleteOnComplete;
+	}
+
+	public void setDeleteOnComplete(Boolean deleteOnComplete) {
+		this.deleteOnComplete = deleteOnComplete;
+	}
+
+	public String getDeleteByQuery() {
+		return deleteByQuery;
+	}
+
+	public void setDeleteByQuery(String deleteByQuery) {
+		this.deleteByQuery = deleteByQuery;
 	}
 
 	public String getTrx() {
@@ -157,10 +180,12 @@ public class Message implements java.io.Serializable {
 		this.outputDataFields = outputDataFields;
 	}
 		
+	
+
 	public Message(String domain, String event, String timestamp, Map data, String topic, String ruleName, String trx,
 			String translatorMap, String jsonQuery, Boolean cache, Integer expectedTrxs, String jsonQueryChild,
 			String tagChild, Boolean master, String outputDataFields, String eventDomain, String dateFormats,
-			String enrichments, String numericFormats) {
+			String enrichments, String numericFormats, Boolean deleteOnComplete, String deleteByQuery) {
 		super();
 		this.domain = domain;
 		this.event = event;
@@ -181,6 +206,8 @@ public class Message implements java.io.Serializable {
 		this.dateFormats = dateFormats;
 		this.enrichments = enrichments;
 		this.numericFormats = numericFormats;
+		this.deleteOnComplete = deleteOnComplete;
+		this.deleteByQuery = deleteByQuery;
 	}
 
 	public String getEventDomain() {

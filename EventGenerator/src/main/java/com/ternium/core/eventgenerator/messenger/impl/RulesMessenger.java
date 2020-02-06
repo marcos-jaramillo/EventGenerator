@@ -47,7 +47,8 @@ public class RulesMessenger implements IMessenger{
             															ruleMessage.getTopic(), ruleMessage.getRuleName(), ruleMessage.getTrx(), ruleMessage.getTranslatorMap(),
             															ruleMessage.getJsonQuery(), ruleMessage.getCache(), ruleMessage.getExpectedTrxs(), ruleMessage.getJsonQueryChild(),
             															ruleMessage.getTagChild(), ruleMessage.getMaster(), ruleMessage.getOutputDataFields(), ruleMessage.getEventDomain(), 
-            															ruleMessage.getDateFormats(), ruleMessage.getEnrichments(), ruleMessage.getNumericFormats());
+            															ruleMessage.getDateFormats(), ruleMessage.getEnrichments(), ruleMessage.getNumericFormats(), ruleMessage.getDeleteOnComplete(),
+            															ruleMessage.getDeleteByQuery());
             cmds.add(new InsertObjectCommand(transportMessage,objectId));
             cmds.add(new FireAllRulesCommand());
             logger.info("Sending Object: " + transportMessage.toString());
@@ -130,6 +131,14 @@ public class RulesMessenger implements IMessenger{
 
 			if(responseMessage.getNumericFormats() != null && !responseMessage.getNumericFormats().isEmpty()) {
 				message.setNumericFormats(responseMessage.getNumericFormats());
+			}
+			
+			if(responseMessage.getDeleteOnComplete() != null) {
+				message.setDeleteOnComplete(responseMessage.getDeleteOnComplete());
+			}
+			
+			if(responseMessage.getDeleteByQuery() != null && !responseMessage.getDeleteByQuery().isEmpty()) {
+				message.setDeleteByQuery(responseMessage.getDeleteByQuery());
 			}
             
 //        } else {

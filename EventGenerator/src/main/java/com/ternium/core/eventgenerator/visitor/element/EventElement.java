@@ -6,6 +6,7 @@ import java.util.Map;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.ternium.core.eventgenerator.domain.Transaction;
 import com.ternium.core.eventgenerator.messenger.vo.KafkaMessage;
 import com.ternium.core.eventgenerator.messenger.vo.Message;
 import com.ternium.core.eventgenerator.visitor.Element;
@@ -21,6 +22,7 @@ public class EventElement extends Element{
 	private Boolean cache;
 	private Map eventDataMap; 
 	private String eventDomain;
+	
 	//Transform Strign message to DataSet
 	
 	@Override

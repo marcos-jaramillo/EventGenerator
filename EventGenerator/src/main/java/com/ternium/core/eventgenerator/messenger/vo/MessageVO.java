@@ -25,6 +25,9 @@ public class MessageVO {
 	private String enrichments;
 	private String numericFormats;
 	
+	private Boolean deleteOnComplete;
+	private String deleteByQuery;
+	
 	public String getMessage() {
 		return message;
 	}
@@ -147,7 +150,20 @@ public class MessageVO {
 	}
 	public void setNumericFormats(String numericFormats) {
 		this.numericFormats = numericFormats;
+	}	
+	public Boolean getDeleteOnComplete() {
+		return deleteOnComplete;
 	}
+	public void setDeleteOnComplete(Boolean deleteOnComplete) {
+		this.deleteOnComplete = deleteOnComplete;
+	}
+	public String getDeleteByQuery() {
+		return deleteByQuery;
+	}
+	public void setDeleteByQuery(String deleteByQuery) {
+		this.deleteByQuery = deleteByQuery;
+	}
+	
 	@Override
 	public String toString() {
 		return "MessageVO [message=" + message + ", outMessage=" + outMessage + ", groupName=" + groupName
@@ -156,13 +172,15 @@ public class MessageVO {
 				+ ", cache=" + cache + ", expectedTrxs=" + expectedTrxs + ", jsonQueryChild=" + jsonQueryChild
 				+ ", tagChild=" + tagChild + ", master=" + master + ", outputDataFields=" + outputDataFields
 				+ ", eventDomain=" + eventDomain + ", dateFormats=" + dateFormats + ", enrichments=" + enrichments
-				+ ", numericFormats=" + numericFormats + "]";
+				+ ", numericFormats=" + numericFormats + ", deleteOnComplete=" + deleteOnComplete + ", deleteByQuery="
+				+ deleteByQuery + "]";
 	}
 	
 	public MessageVO(String message, String outMessage, String groupName, Message messageObj, Integer estatusViaje,
 			String topic, String container, String event, String jsonQuery, String translatorMap, Boolean cache,
 			Integer expectedTrxs, String jsonQueryChild, String tagChild, Boolean master, String outputDataFields,
-			String eventDomain, String dateFormats, String enrichments, String numericFormats) {
+			String eventDomain, String dateFormats, String enrichments, String numericFormats, Boolean deleteOnComplete, 
+			String deleteByQuery) {
 		super();
 		this.message = message;
 		this.outMessage = outMessage;
@@ -184,6 +202,8 @@ public class MessageVO {
 		this.dateFormats = dateFormats;
 		this.enrichments = enrichments;
 		this.numericFormats = numericFormats;
+		this.deleteOnComplete = deleteOnComplete;
+		this.deleteByQuery = deleteByQuery;
 	}
 	public MessageVO() {
 		super();

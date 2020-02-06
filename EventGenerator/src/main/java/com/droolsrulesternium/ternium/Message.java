@@ -31,6 +31,10 @@ public class Message implements java.io.Serializable {
 	private java.lang.String dateFormats;
 	private java.lang.String enrichments;
 	private java.lang.String numericFormats;
+	
+	private java.lang.Boolean deleteOnComplete;
+	private java.lang.String deleteByQuery;
+	
 
 	public Message() {
 	}
@@ -80,13 +84,16 @@ public class Message implements java.io.Serializable {
 		this.ruleName = ruleName;
 	}
 
+
 	@Override
 	public String toString() {
-		return "Message [domain=" + domain + ", event=" + event + ", timestamp=" + timestamp + ", data=" + data
-				+ ", topic=" + topic + ", ruleName=" + ruleName + ", trx=" + trx + ", translatorMap=" + translatorMap
-				+ ", jsonQuery=" + jsonQuery + ", cache=" + cache + ", expectedTrxs=" + expectedTrxs
-				+ ", jsonQueryChild=" + jsonQueryChild + ", tagChild=" + tagChild + ", master=" + master
-				+ ", outputDataFields=" + outputDataFields + ", eventDomain=" + eventDomain + "]";
+		return "Message [domain=" + domain + ", trx=" + trx + ", event=" + event + ", topic=" + topic + ", timestamp="
+				+ timestamp + ", data=" + data + ", ruleName=" + ruleName + ", jsonQuery=" + jsonQuery
+				+ ", translatorMap=" + translatorMap + ", outputDataFields=" + outputDataFields + ", cache=" + cache
+				+ ", expectedTrxs=" + expectedTrxs + ", dataSelect=" + dataSelect + ", jsonQueryChild=" + jsonQueryChild
+				+ ", tagChild=" + tagChild + ", master=" + master + ", eventDomain=" + eventDomain + ", dateFormats="
+				+ dateFormats + ", enrichments=" + enrichments + ", numericFormats=" + numericFormats
+				+ ", deleteOnComplete=" + deleteOnComplete + ", deleteByQuery=" + deleteByQuery + "]";
 	}
 
 	public java.lang.String getTrx() {
@@ -197,10 +204,27 @@ public class Message implements java.io.Serializable {
 	public void setNumericFormats(java.lang.String numericFormats) {
 		this.numericFormats = numericFormats;
 	}
+	
+	public java.lang.Boolean getDeleteOnComplete() {
+		return deleteOnComplete;
+	}
+
+	public void setDeleteOnComplete(java.lang.Boolean deleteOnComplete) {
+		this.deleteOnComplete = deleteOnComplete;
+	}
+
+	public java.lang.String getDeleteByQuery() {
+		return deleteByQuery;
+	}
+
+	public void setDeleteByQuery(java.lang.String deleteByQuery) {
+		this.deleteByQuery = deleteByQuery;
+	}
+
 	public Message(String domain, String event, String timestamp, java.util.Map data, String topic, String ruleName, String trx,
 			String translatorMap, String jsonQuery, Boolean cache, Integer expectedTrxs, String jsonQueryChild,
 			String tagChild, Boolean master, String outputDataFields, java.lang.String eventDomain, java.lang.String dateFormats,
-			java.lang.String enrichments, java.lang.String numericFormats) {
+			java.lang.String enrichments, java.lang.String numericFormats, java.lang.Boolean deleteOnComplete, java.lang.String deleteByQuery) {
 		super();
 		this.domain = domain;
 		this.event = event;
@@ -221,5 +245,7 @@ public class Message implements java.io.Serializable {
 		this.dateFormats = dateFormats;
 		this.enrichments = enrichments;
 		this.numericFormats = numericFormats;
+		this.deleteOnComplete = deleteOnComplete;
+		this.deleteByQuery = deleteByQuery;
 	}
 }
