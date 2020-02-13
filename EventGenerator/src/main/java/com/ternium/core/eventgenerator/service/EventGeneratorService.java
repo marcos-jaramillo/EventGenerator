@@ -36,9 +36,6 @@ public class EventGeneratorService {
 				MDC.put("trx", ((EventElement)element).getMessageObj().getTrx());
 				MDC.put("messageKey", messageKey);
 				MDC.put("timestamp", ((EventElement)element).getMessageObj().getTimestamp());
-				
-				
-				
 				//logger.info("Start Thread " + MDC.get("process_id") + " Processing Message " + message);
 				
 				element.accept(filterVisitor);
@@ -47,7 +44,6 @@ public class EventGeneratorService {
 				
 				logger.info("End Thread");
 			}catch (Exception e) {
-				// TODO: handle exception
 				logger.warn(e.getMessage());
 			}finally {
 				MDC.remove("domain");

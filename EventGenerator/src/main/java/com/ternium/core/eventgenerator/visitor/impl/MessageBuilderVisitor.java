@@ -9,10 +9,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.MDC;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ternium.core.eventgenerator.exception.TopicNotMatchException;
 import com.ternium.core.eventgenerator.kafka.service.KafkaService;
@@ -20,6 +18,7 @@ import com.ternium.core.eventgenerator.messenger.IMessenger;
 import com.ternium.core.eventgenerator.messenger.vo.KafkaMessage;
 import com.ternium.core.eventgenerator.messenger.vo.Message;
 import com.ternium.core.eventgenerator.messenger.vo.MessageVO;
+import com.ternium.core.eventgenerator.repository.TransactionRepository;
 import com.ternium.core.eventgenerator.util.KieServerProperties;
 import com.ternium.core.eventgenerator.util.Utils;
 import com.ternium.core.eventgenerator.visitor.Visitor;
@@ -38,6 +37,9 @@ public class MessageBuilderVisitor implements Visitor{
     @Autowired
 	KieServerProperties kieServerProperties;
     
+    @Autowired
+	TransactionRepository transactionRepository;
+        
 	@Override
 	public void visit(EventElement element) throws Exception {
 		logger.info("Apply MeessageBuilder");

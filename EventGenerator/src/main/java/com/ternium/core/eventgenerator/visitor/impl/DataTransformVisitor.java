@@ -1,5 +1,6 @@
 package com.ternium.core.eventgenerator.visitor.impl;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -23,6 +24,7 @@ import com.ternium.core.eventgenerator.enrichment.utils.EnrichmentUtils;
 import com.ternium.core.eventgenerator.exception.DataAlreadyExistException;
 import com.ternium.core.eventgenerator.exception.EventNotFoundException;
 import com.ternium.core.eventgenerator.exception.EventRequiredRecordsAmountException;
+import com.ternium.core.eventgenerator.exception.MapGenerationException;
 import com.ternium.core.eventgenerator.exception.RuleNotMatchException;
 import com.ternium.core.eventgenerator.messenger.IMessenger;
 import com.ternium.core.eventgenerator.messenger.vo.Message;
@@ -30,6 +32,7 @@ import com.ternium.core.eventgenerator.messenger.vo.MessageVO;
 import com.ternium.core.eventgenerator.repository.TransactionRepository;
 import com.ternium.core.eventgenerator.util.DataFormatsUtils;
 import com.ternium.core.eventgenerator.util.KieServerProperties;
+import com.ternium.core.eventgenerator.util.MapUtils;
 import com.ternium.core.eventgenerator.util.MessageBuilderHelper;
 import com.ternium.core.eventgenerator.util.TranslatorUtils;
 import com.ternium.core.eventgenerator.visitor.Visitor;
@@ -71,6 +74,7 @@ public class DataTransformVisitor implements Visitor{
 		StringSubstitutor sub = null;
 		BasicQuery query = null;
 		List<Transaction> transactions = null;
+		List<Transaction> processedTransactions = new ArrayList<Transaction>();
 		
 		Transaction transaction = new Transaction(message.getDomain(), message.getTrx(), message.getTimestamp(), message.getData());
 		
@@ -104,7 +108,6 @@ public class DataTransformVisitor implements Visitor{
 		element.setEvent(messageVO.getEvent());
 		element.setEventDomain(messageVO.getEventDomain());
 		
-		
 		if(element.getGroupName() == null || element.getGroupName().isEmpty()) {
 			throw new RuleNotMatchException("No RuleName retrived from rule  " + element.getGroupName());
 		}
@@ -125,7 +128,12 @@ public class DataTransformVisitor implements Visitor{
 			}
 		
 			if(messageVO.getJsonQuery() != null && !messageVO.getJsonQuery().isEmpty()) {
-				sub = new StringSubstitutor(element.getMessageObj().getData());
+				
+				Map keysMap = MapUtils.createKeyMapFronJsonQuery(messageVO.getJsonQuery());
+				
+				MapUtils.obtainKeysFromMap(keysMap, element.getMessageObj().getData());
+				
+				sub = new StringSubstitutor(keysMap);
 				resolvedString = sub.replace(messageVO.getJsonQuery());
 				
 				query = new BasicQuery(resolvedString);
@@ -136,7 +144,7 @@ public class DataTransformVisitor implements Visitor{
 					logger.warn("The number of transactions to build the event is not yet completed. " + "Event " + element.getEvent());
 					element.setEventDataMap(null);
 				}else {
-					if(messageVO.getMaster()) {
+					if(messageVO.getTagChild() == null || messageVO.getTagChild().isEmpty()) {
 						eventDataMap = new HashMap();
 						for(Transaction cacheTransaction : transactions) {
 							eventDataMap.putAll(cacheTransaction.getData());
@@ -144,15 +152,14 @@ public class DataTransformVisitor implements Visitor{
 						element.setEventDataMap(eventDataMap);
 					}else {
 						for(Transaction cacheTransaction : transactions) {
-							messageBuilderHelper.proccesMasterMessage(cacheTransaction, messageVO, element);
+							messageBuilderHelper.proccesMasterMessage(cacheTransaction, messageVO, element, processedTransactions);
 							break;
 						}
 					}
 				}
 			}else if(messageVO.getMaster()) {
-				
-				messageBuilderHelper.proccesMasterMessage(transaction, messageVO, element);
-			}
+				messageBuilderHelper.proccesMasterMessage(transaction, messageVO, element, processedTransactions);
+			}			
 		}
 		
 		if(element.getEventDataMap() != null) {
@@ -162,6 +169,45 @@ public class DataTransformVisitor implements Visitor{
 			
 			if(messageVO.getDateFormats() != null && !messageVO.getDateFormats().isEmpty()) {
 				DataFormatsUtils.applyDateDataFormat(element.getEventDataMap(), messageVO.getDateFormats());
+			}
+			
+			if(messageVO.getDeleteOnComplete()) {
+				if(messageVO.getJsonQuery() != null && !messageVO.getJsonQuery().isEmpty()) {
+					if(processedTransactions!= null && !processedTransactions.isEmpty()) {
+						transactionRepository.deleteAll(processedTransactions);
+					}else if(transactions != null && transactions.size() > 0) {
+						transactionRepository.deleteAll(transactions);
+					}
+				}else {
+					if(element.getCache()) {
+						if(processedTransactions!= null && !processedTransactions.isEmpty()) {
+							transactionRepository.deleteAll(processedTransactions);
+						}else {
+							transactionRepository.delete(transaction);
+						}
+					}
+				}
+				logger.info("Record Deleted on Complete");
+	    	}
+			
+			if(messageVO.getDeleteByQuery() != null && !messageVO.getDeleteByQuery().isEmpty()) {
+				int quantityDeleted = 0;
+				Map keysMap = MapUtils.createKeyMapFronJsonQuery(messageVO.getDeleteByQuery());
+				
+				MapUtils.obtainKeysFromMap(keysMap, element.getEventDataMap());
+				
+				sub = new StringSubstitutor(keysMap);
+				resolvedString = sub.replace(messageVO.getJsonQuery());
+				
+				query = new BasicQuery(resolvedString);
+				transactions = mongoOperation.find(query, Transaction.class);
+				
+				if(transactions != null && transactions.size() > 0) {
+					quantityDeleted = transactions.size();
+					transactionRepository.deleteAll(transactions);
+				}
+				
+				logger.info(quantityDeleted + " Records Deleted By Query");
 			}
 		}
 	}
