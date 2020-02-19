@@ -1,5 +1,6 @@
 package com.ternium.core.eventgenerator;
 
+import java.awt.List;
 import java.util.concurrent.TimeUnit;
 
 import org.apache.http.conn.util.DomainType;
@@ -22,6 +23,7 @@ import org.springframework.data.mongodb.core.index.IndexResolver;
 import org.springframework.data.mongodb.core.index.MongoPersistentEntityIndexResolver;
 import org.springframework.data.mongodb.core.mapping.MongoMappingContext;
 
+import com.mongodb.client.ListIndexesIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.model.IndexOptions;
 import com.mongodb.client.model.Indexes;
@@ -64,17 +66,16 @@ public class EventGeneratorApplication {
 	@EventListener(ApplicationReadyEvent.class)
 	 public void initIndicesAfterStartup() {
 		
-	     IndexOperations indexOps = mongoTemplate.indexOps(Transaction.class);
-	
-	     IndexResolver resolver = new MongoPersistentEntityIndexResolver(mongoMappingContext);
-	     resolver.resolveIndexFor(Transaction.class).forEach(indexOps::ensureIndex);
-	     
-	     
 	     MongoCollection<Document> collection = mongoTemplate.getCollection("Transaction");
-	     
+	     try {
+	    	 IndexOperations indexOps = mongoTemplate.indexOps(Transaction.class);
+	    		
+	    	 indexOps.dropAllIndexes();
+		     
+	     }catch (Exception e) {
+			
+	     }
 	     collection.createIndex(Indexes.ascending("creationDate"),
 	             new IndexOptions().expireAfter(new Long(expirationTime), TimeUnit.valueOf(expirationTimeUnit)));
-	     
-
 	}
 }
