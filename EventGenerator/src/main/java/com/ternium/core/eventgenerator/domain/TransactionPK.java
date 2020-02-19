@@ -1,6 +1,7 @@
 package com.ternium.core.eventgenerator.domain;
 
 public class TransactionPK {
+	
 	private String domain;
 	private String trx;
 	private String timestamp;

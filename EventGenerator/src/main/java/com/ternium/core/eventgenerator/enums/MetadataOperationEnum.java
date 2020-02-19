@@ -38,7 +38,7 @@ public enum MetadataOperationEnum {
 		this.operationClass = operationClass;
 	}
 	
-	public static MetadataOperationEnum findByName(String name) {
+	public static MetadataOperationEnum findByName(String name) throws InvalidMetadataException{
 		for (MetadataOperationEnum at : MetadataOperationEnum.values()) {
             if (name.equals(at.getName())) {
                 return at;

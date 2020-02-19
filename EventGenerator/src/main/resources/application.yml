@@ -26,6 +26,9 @@ spring:
       host: localhost
       port: 27017
       database: ternium
+      auto-index-creation: false
+      expiration-duration: 10
+      expiration-time-unit: SECONDS
 app:
   topic:
     planeacion: mx.com.ternium.planeacion    
@@ -42,7 +45,7 @@ kieserver:
   url: http://localhost:8080/business-central/maven2/com/droolsrulesternium/ternium/1.0.0/ternium-1.0.0.jar
   user: wbadmin
   password: wbadmin
-  container: ternium_1.0.0-SNAPSHOT
+  container: ternium_1.0.0
   mainrulename: FilterRules
   translatoragendarule: Translator
 logging:  logstash:    enabled: true
