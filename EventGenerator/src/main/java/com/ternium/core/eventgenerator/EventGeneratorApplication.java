@@ -5,6 +5,7 @@ import java.util.concurrent.TimeUnit;
 
 import org.apache.http.conn.util.DomainType;
 import org.bson.Document;
+import org.kie.api.builder.ReleaseIdComparator.SortDirection;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +18,9 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.event.EventListener;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.index.Index;
 import org.springframework.data.mongodb.core.index.IndexOperations;
 import org.springframework.data.mongodb.core.index.IndexResolver;
 import org.springframework.data.mongodb.core.index.MongoPersistentEntityIndexResolver;
@@ -72,16 +75,20 @@ public class EventGeneratorApplication {
 	    		
 	    	 indexOps.dropAllIndexes();
 	    	 
+	    	
+	    	 
+	    	 
+	    	 indexOps.ensureIndex(new Index().on("creationDate", Direction.ASC).expire(new Long(expirationTime), TimeUnit.valueOf(expirationTimeUnit)));
+	    	 
+	    	 
+	    	 
 		     IndexResolver resolver = new MongoPersistentEntityIndexResolver(mongoMappingContext);
 		     
 		     
 		     resolver.resolveIndexFor(Transaction.class).forEach(indexOps::ensureIndex);
-	    	 
-	    	 collection.dropIndex("creationDate_1");
 	     }catch (Exception e) {
 			
 	     }
-	     collection.createIndex(Indexes.ascending("creationDate"),
-	             new IndexOptions().expireAfter(new Long(expirationTime), TimeUnit.valueOf(expirationTimeUnit)));
+	     
 	}
 }
