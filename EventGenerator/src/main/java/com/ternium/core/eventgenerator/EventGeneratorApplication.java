@@ -71,7 +71,13 @@ public class EventGeneratorApplication {
 	    	 IndexOperations indexOps = mongoTemplate.indexOps(Transaction.class);
 	    		
 	    	 indexOps.dropAllIndexes();
+	    	 
+		     IndexResolver resolver = new MongoPersistentEntityIndexResolver(mongoMappingContext);
 		     
+		     
+		     resolver.resolveIndexFor(Transaction.class).forEach(indexOps::ensureIndex);
+	    	 
+	    	 collection.dropIndex("creationDate_1");
 	     }catch (Exception e) {
 			
 	     }
