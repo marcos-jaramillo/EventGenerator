@@ -2,9 +2,9 @@
 <configuration>
  
  	<springProperty name="LOGSTASH_HOST" source="logging.logstash.host"/>
- 	<springProperty name="LOGSTASH_ENABLED" source="logstash.logstash.enabled"/>
- 	<springProperty name="LOGSTASH_PORT" source="logstash.logstash.port"/>
- 	<springProperty name="LOGSTASH_QUEUE_SIZE" source="logstash.logstash.queue-size"/>
+ 	<springProperty name="LOGSTASH_ENABLED" source="logging.logstash.enabled"/>
+ 	<springProperty name="LOGSTASH_PORT" source="logging.logstash.port"/>
+ 	<springProperty name="LOGSTASH_QUEUE_SIZE" source="logging.logstash.queue-size"/>
  	
     <property name="LOGS" value="./logs" />
  
@@ -37,17 +37,29 @@
         </rollingPolicy>
     </appender>
      
-    <!-- 
+    
     <appender name="STASH" class="net.logstash.logback.appender.LogstashTcpSocketAppender">
-        <destination>${LOGSTASH_HOST}:${LOGSTASH_PORT}</destination>
-        <encoder class="net.logstash.logback.encoder.LogstashEncoder" />
+    	<param name="Encoding" value="UTF-8"/>
+    	<remoteHost>${LOGSTASH_HOST}</remoteHost>
+        <port>${LOGSTASH_PORT}</port>
+        
+        <encoder class="net.logstash.logback.encoder.LogstashEncoder">
+        	<includeMdcKeyName>messageKey</includeMdcKeyName>
+        	<includeMdcKeyName>domain</includeMdcKeyName>
+        	<includeMdcKeyName>trx</includeMdcKeyName>
+        	<includeMdcKeyName>timestamp</includeMdcKeyName>
+        	<includeMdcKeyName>event</includeMdcKeyName>
+        	<includeMdcKeyName>topic</includeMdcKeyName>
+        	<includeMdcKeyName>executionCode</includeMdcKeyName>
+        	<shortenedLoggerNameLength>0</shortenedLoggerNameLength>
+        </encoder>
     </appender>
-     -->
+    
     <!-- LOG everything at INFO level -->
     <root level="info">
         <appender-ref ref="RollingFile" />
         <appender-ref ref="Console" />
-        <!-- appender-ref ref="STASH" /-->
+        <appender-ref ref="STASH" />
     </root>
  
 </configuration>

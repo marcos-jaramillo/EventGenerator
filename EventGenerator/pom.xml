@@ -151,7 +151,11 @@
 		    <artifactId>drools-workbench-models-guided-dtable</artifactId>
 		    <version>${drools.version}</version>
 		</dependency>
-		
+		<dependency>
+			<groupId>commons-net</groupId>
+			<artifactId>commons-net</artifactId>
+			<version>3.6</version>
+		</dependency>
         <!-- https://mvnrepository.com/artifact/org.drools/drools-core -->
         
        <!--  <dependency>

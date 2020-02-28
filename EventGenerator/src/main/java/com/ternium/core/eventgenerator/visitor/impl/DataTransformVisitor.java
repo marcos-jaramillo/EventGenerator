@@ -141,8 +141,8 @@ public class DataTransformVisitor implements Visitor{
 				//logger.info("QUERY EXECUTED " + resolvedString + " Records :: " + (transactions!=null?transactions.size():0));
 				
 				if(transactions == null || transactions.size() < messageVO.getExpectedTrxs()) {
-					logger.warn("The number of transactions to build the event is not yet completed. " + "Event " + element.getEvent());
 					element.setEventDataMap(null);
+					throw new EventRequiredRecordsAmountException("The number of transactions to build the event is not yet completed. " + "Event " + element.getEvent());
 				}else {
 					if(messageVO.getTagChild() == null || messageVO.getTagChild().isEmpty()) {
 						eventDataMap = new HashMap();

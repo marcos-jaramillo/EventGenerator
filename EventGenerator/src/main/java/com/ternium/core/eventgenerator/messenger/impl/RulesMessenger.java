@@ -19,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.ternium.core.eventgenerator.exception.RuleMessengerException;
 import com.ternium.core.eventgenerator.messenger.IMessenger;
 import com.ternium.core.eventgenerator.messenger.vo.Message;
 import com.ternium.core.eventgenerator.messenger.vo.MessageVO;
@@ -147,8 +148,7 @@ public class RulesMessenger implements IMessenger{
 //            message.setEstatusViaje(0);
 //        }
         }catch (Exception e) {
-			// TODO: handle exception
-        	logger.error("error rules " , e);
+        	throw new RuleMessengerException("Error while executing Rule " + e.getMessage());
 		}
 	}
 	

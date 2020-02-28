@@ -1,5 +1,7 @@
 package com.ternium.core.eventgenerator.stream;
 
+import java.util.Calendar;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.MDC;
@@ -25,9 +27,10 @@ public class RabbitStream {
     public String recieveMessage(String message) {
 		String messageKey = String.valueOf(KeyGenerator.getKey());
 		MDC.put("messageKey", messageKey);
+		long startMillis = Calendar.getInstance().getTimeInMillis();
 		
 		logger.info("Received Message " + message);
-		messageService.processMessage(message, messageKey);
+		messageService.processMessage(message, messageKey, startMillis);
         return "PROCESS" + message;
     }
 }

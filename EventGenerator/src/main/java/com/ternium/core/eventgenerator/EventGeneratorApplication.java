@@ -74,17 +74,9 @@ public class EventGeneratorApplication {
 	    	 IndexOperations indexOps = mongoTemplate.indexOps(Transaction.class);
 	    		
 	    	 indexOps.dropAllIndexes();
-	    	 
-	    	
-	    	 
-	    	 
 	    	 indexOps.ensureIndex(new Index().on("creationDate", Direction.ASC).expire(new Long(expirationTime), TimeUnit.valueOf(expirationTimeUnit)));
 	    	 
-	    	 
-	    	 
 		     IndexResolver resolver = new MongoPersistentEntityIndexResolver(mongoMappingContext);
-		     
-		     
 		     resolver.resolveIndexFor(Transaction.class).forEach(indexOps::ensureIndex);
 	     }catch (Exception e) {
 			

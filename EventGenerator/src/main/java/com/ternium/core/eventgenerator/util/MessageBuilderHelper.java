@@ -15,6 +15,7 @@ import org.springframework.data.mongodb.core.query.BasicQuery;
 import org.springframework.stereotype.Component;
 
 import com.ternium.core.eventgenerator.domain.Transaction;
+import com.ternium.core.eventgenerator.exception.EventRequiredRecordsAmountException;
 import com.ternium.core.eventgenerator.exception.MapGenerationException;
 import com.ternium.core.eventgenerator.messenger.vo.MessageVO;
 import com.ternium.core.eventgenerator.visitor.element.EventElement;
@@ -26,7 +27,7 @@ public class MessageBuilderHelper {
 	@Autowired
     MongoTemplate mongoTemplate;
 
-	public void proccesMasterMessage(Transaction transaction, MessageVO messageVO, EventElement element, List<Transaction> processedTransaction) throws MapGenerationException{
+	public void proccesMasterMessage(Transaction transaction, MessageVO messageVO, EventElement element, List<Transaction> processedTransaction) throws MapGenerationException, EventRequiredRecordsAmountException{
 		Object elementChildObj = transaction.getData().get(messageVO.getTagChild());
 		Iterator<Object> itElements = null;
 		Map<Object,Object> elementMap;
@@ -58,9 +59,8 @@ public class MessageBuilderHelper {
 				//logger.info("QUERY EXECUTED " + resolvedString + " Records :: " + (transactions!=null?transactions.size():0));
 				
 				if(transactions == null || transactions.isEmpty()) {
-					logger.warn("The number of transactions to build the event is not yet completed. " + "Event " + element.getEvent());
 					element.setEventDataMap(null);
-					break;
+					throw new EventRequiredRecordsAmountException("The number of transactions to build the event is not yet completed. " + "Event " + element.getEvent());
 				}else {
 					for(Transaction cacheTransaction : transactions) {
 						elementMap.putAll(cacheTransaction.getData());

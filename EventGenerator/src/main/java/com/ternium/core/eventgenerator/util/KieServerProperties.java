@@ -28,10 +28,6 @@ public class KieServerProperties {
 	@Value("${kieserver.container}")
 	private String container;
 	
-	@Value("${kieserver.mainrulename}")
-	private String mainrule;
-	
-
 	public String getServerUrl() {
 		return serverUrl;
 	}
@@ -63,15 +59,6 @@ public class KieServerProperties {
 	public void setContainer(String container) {
 		this.container = container;
 	}
-	
-	
-	public String getMainrule() {
-		return mainrule;
-	}
-
-	public void setMainrule(String mainrule) {
-		this.mainrule = mainrule;
-	}	
 	
 	@Bean
 	public StatelessKieSession statelessKieSession() {

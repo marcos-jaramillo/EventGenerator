@@ -27,17 +27,8 @@ spring:
       port: 27017
       database: ternium
       auto-index-creation: false
-      expiration-duration: 10
-      expiration-time-unit: SECONDS
-app:
-  topic:
-    planeacion: mx.com.ternium.planeacion    
-    programacion: mx.com.ternium.programacion
-    logistica: mx.com.ternium.logistica
-management:
-  health:
-    binders:
-      enabled: true
+      expiration-duration: 15
+      expiration-time-unit: MINUTES
 server:
   port: 8081
 kieserver:
