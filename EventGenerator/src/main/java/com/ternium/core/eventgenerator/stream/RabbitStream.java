@@ -14,6 +14,11 @@ import org.springframework.messaging.handler.annotation.SendTo;
 import com.ternium.core.eventgenerator.EventGeneratorApplication;
 import com.ternium.core.eventgenerator.service.EventGeneratorService;
 import com.ternium.core.eventgenerator.util.KeyGenerator;
+/**
+ * 
+ * La funcion de esta clase es obtener los mensajes de la cola de mensajes de RabbitMQ
+ *
+ */
 
 @EnableBinding(Processor.class)
 public class RabbitStream {

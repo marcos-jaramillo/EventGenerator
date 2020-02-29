@@ -8,6 +8,12 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+/**
+ * 
+ * Esta clase tiene como objetivo ser el POJO que mapea la coleccion Transactions en MongoDB.
+ * 
+ */
+
 @Document(collection = "Transactions")
 public class Transaction {	
 	@Id

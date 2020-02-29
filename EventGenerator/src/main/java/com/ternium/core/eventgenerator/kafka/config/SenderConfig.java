@@ -11,7 +11,11 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.kafka.core.DefaultKafkaProducerFactory;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.core.ProducerFactory;
-
+/**
+ * 
+ * La funcion de esta clase es la configuracion de la conexion hacia Kafka por medio de KafkaTemplate.
+ *
+ */
 @Configuration
 public class SenderConfig {
 	@Value("${spring.kafka.bootstrap-servers}")

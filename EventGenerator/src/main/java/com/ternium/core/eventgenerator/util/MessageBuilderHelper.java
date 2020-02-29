@@ -1,6 +1,5 @@
 package com.ternium.core.eventgenerator.util;
 
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -19,7 +18,11 @@ import com.ternium.core.eventgenerator.exception.EventRequiredRecordsAmountExcep
 import com.ternium.core.eventgenerator.exception.MapGenerationException;
 import com.ternium.core.eventgenerator.messenger.vo.MessageVO;
 import com.ternium.core.eventgenerator.visitor.element.EventElement;
-
+/**
+ * 
+ * Clase con la funcion de procesar el mensaje Master de una transaccion compleja
+ *
+ */
 @Component
 public class MessageBuilderHelper {
 	private static Logger logger = LoggerFactory.getLogger(MessageBuilderHelper.class);

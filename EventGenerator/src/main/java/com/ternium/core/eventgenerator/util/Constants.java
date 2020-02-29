@@ -1,9 +1,10 @@
 package com.ternium.core.eventgenerator.util;
 
-import java.util.Map;
-
-import com.ternium.core.eventgenerator.exception.InvalidEnrichmentDataException;
-
+/**
+ * 
+ * Clase de constantes
+ *
+ */
 public class Constants {
 	public static final String INPUT_FORMAT = "input_format";
 	public static final String OUTPUT_FORMAT = "output_format";

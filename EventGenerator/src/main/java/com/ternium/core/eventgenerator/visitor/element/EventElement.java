@@ -11,7 +11,13 @@ import com.ternium.core.eventgenerator.messenger.vo.KafkaMessage;
 import com.ternium.core.eventgenerator.messenger.vo.Message;
 import com.ternium.core.eventgenerator.visitor.Element;
 import com.ternium.core.eventgenerator.visitor.Visitor;
-
+/**
+ * 
+ * Implementacion de la clase Element para contener la informacion del mensaje a procesar en la capa visitor
+ * 
+ * Esta clase contiene un metodo accept que de parametro recibe una interfaz Visitor.
+ *
+ */
 public class EventElement extends Element{
 	private String message;
 	private String groupName;

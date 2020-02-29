@@ -1,5 +1,10 @@
 package com.ternium.core.eventgenerator.exception;
 
+/**
+ * 
+ * Esta clase representa la excepcion generada para identificar cuando la informacion de la transaccion ya existe en base de datos. 
+ *
+ */
 public class DataAlreadyExistException extends Exception{
 
 	/**

@@ -5,12 +5,15 @@ import java.util.Map;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.ternium.core.eventgenerator.exception.TranslatorDuplicateKeyException;
-
+/**
+ * 
+ * Clase de uteleria para aplicar el proceso de traduccion de campos que se configuran en la regla de Translator
+ *
+ */
 public class TranslatorUtils {
 	static ObjectMapper objectMapper = new ObjectMapper();
 	@SuppressWarnings("unchecked")
-	public static Map applyTransalator(Map data, String translator) throws TranslatorDuplicateKeyException{
+	public static Map applyTransalator(Map data, String translator) {
 		Map result =  data;
 		Map translatorMap = null;
 		

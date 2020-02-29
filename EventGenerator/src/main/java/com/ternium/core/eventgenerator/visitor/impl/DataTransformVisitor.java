@@ -1,9 +1,7 @@
 package com.ternium.core.eventgenerator.visitor.impl;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -15,7 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.data.mongodb.core.MongoTemplate;
-import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.query.BasicQuery;
 import org.springframework.stereotype.Component;
 
@@ -24,7 +21,6 @@ import com.ternium.core.eventgenerator.enrichment.utils.EnrichmentUtils;
 import com.ternium.core.eventgenerator.exception.DataAlreadyExistException;
 import com.ternium.core.eventgenerator.exception.EventNotFoundException;
 import com.ternium.core.eventgenerator.exception.EventRequiredRecordsAmountException;
-import com.ternium.core.eventgenerator.exception.MapGenerationException;
 import com.ternium.core.eventgenerator.exception.RuleNotMatchException;
 import com.ternium.core.eventgenerator.messenger.IMessenger;
 import com.ternium.core.eventgenerator.messenger.vo.Message;
@@ -37,7 +33,20 @@ import com.ternium.core.eventgenerator.util.MessageBuilderHelper;
 import com.ternium.core.eventgenerator.util.TranslatorUtils;
 import com.ternium.core.eventgenerator.visitor.Visitor;
 import com.ternium.core.eventgenerator.visitor.element.EventElement;
-
+/**
+ * 
+ * Clase que implementa el comportamieto para aplicar la capa de negocio de Transformacion de Datos para la clase Element
+ * 
+ * En esta clase se aplican la funcionalidades:
+ * Cache : almacena el json del mensaje de la transaccion en la base de datos MongoDB
+ * JsonQuery: Ejecuta consultas sobre MongoDB utilizando el jsonQuery configurado en la regla para obtener los documentos esperados.
+ * DeleteOnComplete: Aplica la logica para eliminar la transaccion y las posibles transaccion relacionadas de la base de datos cuando seacposible generar el mensaje final.
+ * DeleteByQuery: Aplica la logica para eliminar las transacciones obtenidas de un query cuando sea posible generar el mensaje final.
+ * Master: Inicia el proceso de procesamiento de mensajes Complejos
+ * Enrichments: Inicia el proceso de enrichments
+ * DataFormat: Inicia el proceso de Data Format
+ *
+ */
 @Component
 public class DataTransformVisitor implements Visitor{
     private static Logger logger = LoggerFactory.getLogger(DataTransformVisitor.class);

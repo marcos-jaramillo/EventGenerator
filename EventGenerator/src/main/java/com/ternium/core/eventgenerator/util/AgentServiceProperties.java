@@ -3,6 +3,11 @@ package com.ternium.core.eventgenerator.util;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
+/**
+ * 
+ * Clase que almacena las propiedades de informacion del Agent Service
+ *
+ */
 
 @Configuration
 @PropertySource("classpath:agentservice.properties")

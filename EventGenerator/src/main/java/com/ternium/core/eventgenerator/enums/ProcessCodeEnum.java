@@ -1,5 +1,9 @@
 package com.ternium.core.eventgenerator.enums;
-
+/**
+ * 
+ * Enumeracion para definir el codigo de estatus de la ejecucion de una transaccion procesada por el proyecto EventGenerator.
+ *
+ */
 public enum ProcessCodeEnum {
 	SUCCESS("000000"),
 	GENERAL_ERROR("111111"),

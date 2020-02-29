@@ -9,7 +9,11 @@ import org.apache.commons.text.matcher.StringMatcher;
 import org.apache.commons.text.matcher.StringMatcherFactory;
 
 import com.ternium.core.eventgenerator.exception.MapGenerationException;
-
+/**
+ * 
+ * Clase de utelerias sobre mapas
+ *
+ */
 public class MapUtils {
 	public static Map createKeyMapFronJsonQuery(String jsonQuery) throws MapGenerationException{
 		Map keyMap = new HashMap<>();

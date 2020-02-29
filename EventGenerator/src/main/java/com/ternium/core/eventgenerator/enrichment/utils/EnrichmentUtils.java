@@ -14,6 +14,15 @@ import com.ternium.core.eventgenerator.enums.MetadataOperationEnum;
 import com.ternium.core.eventgenerator.exception.InvalidEnrichmentDataException;
 import com.ternium.core.eventgenerator.util.Constants;
 
+/**
+ * 
+ * Esta clase de utiliades procesa la configuracion de enrichments que se congfiguro en la regla de Transform en KIE Server.
+ * 
+ * Actualmente solo tiene implementado la operacion concat
+ * 
+ * Pendiente agregar funcionalidad para ejecutar la implementacion de la operacion recibida en la configuracion de enrichments 
+ *
+ */
 public class EnrichmentUtils {
 	private static Logger logger = LoggerFactory.getLogger(EnrichmentUtils.class);
 	

@@ -18,7 +18,11 @@ import org.slf4j.LoggerFactory;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ternium.core.eventgenerator.exception.InvalidDataFormatException;
 import com.ternium.core.eventgenerator.exception.InvalidEnrichmentDataException;
-
+/**
+ * 
+ * Clase de utilerias para procesar formatos de fechas en el proceso de FormatData
+ *
+ */
 public class DataFormatsUtils {
 	private static Logger logger = LoggerFactory.getLogger(DataFormatsUtils.class);
 	

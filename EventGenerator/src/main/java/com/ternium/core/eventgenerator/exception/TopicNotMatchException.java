@@ -1,5 +1,9 @@
 package com.ternium.core.eventgenerator.exception;
-
+/**
+ * 
+ * Esta clase representa a la Excepcion que se genera al no encontrar un topico en la regla de topicos.
+ *
+ */
 public class TopicNotMatchException extends Exception{
 
 	/**

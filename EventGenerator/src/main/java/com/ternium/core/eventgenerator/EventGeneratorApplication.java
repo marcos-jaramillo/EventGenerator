@@ -1,11 +1,8 @@
 package com.ternium.core.eventgenerator;
 
-import java.awt.List;
 import java.util.concurrent.TimeUnit;
 
-import org.apache.http.conn.util.DomainType;
 import org.bson.Document;
-import org.kie.api.builder.ReleaseIdComparator.SortDirection;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,18 +23,18 @@ import org.springframework.data.mongodb.core.index.IndexResolver;
 import org.springframework.data.mongodb.core.index.MongoPersistentEntityIndexResolver;
 import org.springframework.data.mongodb.core.mapping.MongoMappingContext;
 
-import com.mongodb.client.ListIndexesIterable;
 import com.mongodb.client.MongoCollection;
-import com.mongodb.client.model.IndexOptions;
-import com.mongodb.client.model.Indexes;
 import com.ternium.core.eventgenerator.domain.Transaction;
 import com.ternium.core.eventgenerator.util.AgentServiceProperties;
 import com.ternium.core.eventgenerator.util.KieServerProperties;
-import com.ternium.core.eventgenerator.util.LoggingProperties;
-import com.ternium.core.eventgenerator.util.SparkProperties;
 
+/**
+ *
+ * Esta es la clase principal del proyecto que tiene la funcion de iniciar el contexto de Springboot. 
+ * 
+ */
 @SpringBootApplication
-@EnableConfigurationProperties({SparkProperties.class, KieServerProperties.class, AgentServiceProperties.class, LoggingProperties.class})
+@EnableConfigurationProperties({KieServerProperties.class, AgentServiceProperties.class})
 public class EventGeneratorApplication {
 	private static Logger logger = LoggerFactory.getLogger(EventGeneratorApplication.class); 
 

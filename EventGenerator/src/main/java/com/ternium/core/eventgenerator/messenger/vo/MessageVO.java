@@ -1,7 +1,10 @@
 package com.ternium.core.eventgenerator.messenger.vo;
 
-import java.util.Map;
-
+/**
+ * 
+ * Clase de transporte de informacion entre la capa de Visitor y Messenger.
+ *
+ */
 public class MessageVO {
 	private String message;
 	private String outMessage;

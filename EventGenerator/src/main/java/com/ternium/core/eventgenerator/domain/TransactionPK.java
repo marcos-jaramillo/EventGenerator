@@ -1,5 +1,10 @@
 package com.ternium.core.eventgenerator.domain;
 
+/**
+ * 
+ * Esta clase es el mapeo de la primary key de la coleccion de Transactions en MongoDB.
+ * 
+ */
 public class TransactionPK {
 	
 	private String domain;

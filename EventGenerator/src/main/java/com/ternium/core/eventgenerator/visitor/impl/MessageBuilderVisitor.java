@@ -23,7 +23,15 @@ import com.ternium.core.eventgenerator.util.KieServerProperties;
 import com.ternium.core.eventgenerator.util.Utils;
 import com.ternium.core.eventgenerator.visitor.Visitor;
 import com.ternium.core.eventgenerator.visitor.element.EventElement;
-
+/**
+ * 
+ * Clase que implementa el comportamieto para aplicar la capa de negocio de Construccion de Mensaje para la clase Element
+ * 
+ * En esta clase se valida si existe configuracion establecida para los datos de la transaccion en la regla de Topicos y
+ * muta la informacion del objeto data en base a la configuracion en la regla de topicos.
+ * 
+ *
+ */
 @Component
 public class MessageBuilderVisitor implements Visitor{
 	private static Logger logger = LoggerFactory.getLogger(MessageBuilderVisitor.class);

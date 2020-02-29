@@ -1,5 +1,9 @@
 package com.ternium.core.eventgenerator.util;
-
+/**
+ * 
+ * Clase de utelerias para generar una llave unica que se utiliza como messageKey de la transaccion
+ *
+ */
 public class KeyGenerator {
 	private static final long LIMIT = 10000000000L;
 	private static long last = 0;

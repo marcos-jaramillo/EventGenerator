@@ -4,7 +4,11 @@ import org.springframework.jmx.export.metadata.InvalidMetadataException;
 
 import com.ternium.core.eventgenerator.enrichment.operation.impl.ConcatOperation;
 import com.ternium.core.eventgenerator.util.Constants;
-
+/**
+ * 
+ * Enumeracion para acotar las operaciones concat soportadas en la definicion de enrichments configurada en la regla de Transformacion.
+ *
+ */
 public enum MetadataOperationEnum {
 	
 	

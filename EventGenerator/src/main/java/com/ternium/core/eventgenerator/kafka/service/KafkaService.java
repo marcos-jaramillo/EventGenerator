@@ -6,7 +6,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
-
+/**
+ * 
+ * Clase con la funcion de enviar el mensaje del evento a Kafka.
+ *
+ */
 @Service
 public class KafkaService {
 	private static final Logger logger = LoggerFactory.getLogger(KafkaService.class);

@@ -14,7 +14,13 @@ import com.ternium.core.eventgenerator.repository.TransactionRepository;
 import com.ternium.core.eventgenerator.util.KieServerProperties;
 import com.ternium.core.eventgenerator.visitor.Visitor;
 import com.ternium.core.eventgenerator.visitor.element.EventElement;
-
+/**
+ * 
+ * Clase que implementa el comportamieto para aplicar la capa de negocio de Filtro para la clase Element
+ * 
+ * En esta clase se valida que la transaccion recibida tenga una configuracion en la regla de filtro.
+ *
+ */
 @Component
 public class FilterVisitor implements Visitor{
 	private static Logger logger = LoggerFactory.getLogger(FilterVisitor.class);

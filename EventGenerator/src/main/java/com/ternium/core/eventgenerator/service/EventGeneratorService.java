@@ -28,7 +28,11 @@ import com.ternium.core.eventgenerator.exception.TopicNotMatchException;
 import com.ternium.core.eventgenerator.visitor.Element;
 import com.ternium.core.eventgenerator.visitor.Visitor;
 import com.ternium.core.eventgenerator.visitor.element.EventElement;
-
+/**
+ * 
+ * El objetivo de esta clse es gestionar el flujo de la transaccion.
+ *
+ */
 @Service
 public class EventGeneratorService {
 	private static Logger logger = LoggerFactory.getLogger(EventGeneratorService.class); 

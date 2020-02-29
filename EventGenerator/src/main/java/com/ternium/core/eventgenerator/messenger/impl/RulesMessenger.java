@@ -24,6 +24,11 @@ import com.ternium.core.eventgenerator.messenger.IMessenger;
 import com.ternium.core.eventgenerator.messenger.vo.Message;
 import com.ternium.core.eventgenerator.messenger.vo.MessageVO;
 
+/**
+ * 
+ * Esta clase tiene la funcion de implementar el comportamiento de la interfaz de comunicacion con KIE Server.
+ *
+ */
 
 @Component
 public class RulesMessenger implements IMessenger{

@@ -1,7 +1,11 @@
 package com.ternium.core.eventgenerator.messenger.vo;
 
 import java.util.Map;
-
+/**
+ * 
+ * Esta clase tiene la funcion de transportar datos entre la clase Messenger y la clase MessageBuilderVisitor.
+ *
+ */
 public class KafkaMessage {
 	private String domain;
 	private String event;

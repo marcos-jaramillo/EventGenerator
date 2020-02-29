@@ -13,6 +13,11 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+/**
+ * 
+ * Clase que almacena la configuracion de la conexion del KIE Server 
+ *
+ */
 @Configuration
 @ConfigurationProperties(prefix = "application", ignoreUnknownFields = false)
 public class KieServerProperties {

@@ -6,9 +6,16 @@ import com.ternium.core.eventgenerator.enrichment.operation.EnrichmentOperation;
 import com.ternium.core.eventgenerator.exception.EnrichmentOperationException;
 import com.ternium.core.eventgenerator.exception.InvalidEnrichmentDataException;
 import com.ternium.core.eventgenerator.util.Constants;
-
+/**
+ * 
+ * Esta clase es la implementacion de la interfaz EnrichmentOperation. 
+ * Dicta el comportamiento de la operacion concat de 1 o mas campos.
+ * 
+ * Pendiente de implementacion, siguiente fase.
+ *
+ */
 public class ConcatOperation implements EnrichmentOperation{
-	String json = "{\"NuevoCampo\":{\"concat\":\"field1,field2,'Campo3'\"},\"NuevoCampo2\":{\"concat\":\"field1,'Campo3'\"},\"NuevoCampo3\":{\"concat\":\"'Campo3','Campo4'\"},\"NuevoCampo4\":\"'Campo3','Campo4'\"}";
+	
 	@Override
 	public Object execute(Map dataMap , Map dataOperation, String key) throws EnrichmentOperationException, InvalidEnrichmentDataException {
 		Object value = dataOperation.get(key);

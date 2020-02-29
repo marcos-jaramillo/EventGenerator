@@ -2,7 +2,11 @@ package com.ternium.core.eventgenerator.util;
 
 import java.util.ArrayList;
 import java.util.List;
-
+/**
+ * 
+ * Clase de utileria para obtener las llaves insertadas en un json query
+ *
+ */
 public class JsonQueryUtils {
 	public static final String ELEMENT_TAG = "$(";
 	
